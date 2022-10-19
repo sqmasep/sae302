@@ -1,21 +1,21 @@
 import chalk from "chalk";
 export default {
-  success<T>(msg: T) {
+  success: (msg: any) =>
     console.log(
       chalk.greenBright.bold.bgGreenBright("[✓]"),
       chalk.greenBright(msg)
-    );
-  },
-  error<T>(msg: T) {
-    console.log(chalk.red.bold.bgRedBright("[‼]"), chalk.red(msg));
-  },
-  warn<T>(msg: T) {
-    console.log(
+    ),
+  error: (msg: any) =>
+    console.error(chalk.red.bold.bgRedBright("[‼]"), chalk.red(msg)),
+
+  warn: (msg: any) =>
+    console.warn(
       chalk.hex("#fa0").bold.bgHex("#f90")("[/]"),
       chalk.hex("#fa0")(msg)
-    );
-  },
-  info<T>(msg: T) {
-    console.log(chalk.blue.bold.bgBlueBright("[?]"), chalk.blue(msg));
-  },
+    ),
+
+  info: (msg: any) =>
+    console.info(chalk.blue.bold.bgBlueBright("[?]"), chalk.blue(msg)),
+
+  danger: (msg: any): string => chalk.red(msg),
 };
