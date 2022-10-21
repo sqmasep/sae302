@@ -9,7 +9,7 @@ const LevelContext = createContext(null);
 export const LevelContextProvider: React.FC<LevelContextProps> = ({
   children,
 }) => {
-  const level = useLocalStorage("level");
+  const level = useLocalStorage("level", "");
   return <LevelContext.Provider value={null}>{children}</LevelContext.Provider>;
 };
 
