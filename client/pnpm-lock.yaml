@@ -27,6 +27,7 @@ specifiers:
   webpack-cli: ^4.10.0
   webpack-dev-server: ^4.11.1
   zod: ^3.19.1
+  zod-formik-adapter: ^1.1.1
 
 dependencies:
   '@babel/preset-typescript': 7.18.6_@babel+core@7.19.3
@@ -41,6 +42,7 @@ dependencies:
   socket.io-client: 4.5.3
   typescript: 4.8.4
   zod: 3.19.1
+  zod-formik-adapter: 1.1.1_3lqirbki2mw44cni3tz454y4qm
 
 devDependencies:
   '@babel/core': 7.19.3
@@ -4259,6 +4261,18 @@ packages:
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
+
+  /zod-formik-adapter/1.1.1_3lqirbki2mw44cni3tz454y4qm:
+    resolution: {integrity: sha512-nN787YLM+FauP3oJGOMKGJAIYK5wwrLy3KVdlv6Ac7HrgKkFAEiDyVQ6cz+i009dE7PxQmlPUtjZLpiA0syR3Q==}
+    peerDependencies:
+      formik: ^2.2.9
+      react: ^17.0.2
+      zod: ~3.14.4
+    dependencies:
+      formik: 2.2.9_react@18.2.0
+      react: 18.2.0
+      zod: 3.19.1
+    dev: false
 
   /zod/3.19.1:
     resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
