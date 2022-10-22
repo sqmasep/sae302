@@ -5,3 +5,5 @@ const Answer = new mongoose.Schema({
   idQuestion: SchemaTypes.ObjectId,
   nextIdQuestion: SchemaTypes.ObjectId,
 });
+
+export default mongoose.model("Answer", Answer);

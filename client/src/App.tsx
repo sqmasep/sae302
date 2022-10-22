@@ -1,18 +1,44 @@
+import { createTheme, ThemeProvider } from "@mui/material";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home/Home";
-import Playground from "./pages/Playground/Playground";
+import { LevelContextProvider } from "./contexts/LevelProvider";
+import { Home, Playground } from "./pages";
 import Temporaire from "./pages/temporaire/Temporaire";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "Readex Pro",
+  },
+  palette: {
+    primary: {
+      main: "#5379FF",
+    },
+  },
+  components: {
+    MuiButton: {
+      variants: [
+        {
+          props: { variant: "contained" },
+          style: {
+            fontFamily: "Readex Pro",
+          },
+        },
+      ],
+    },
+  },
+});
 
 const App: React.FC = () => {
   return (
-    <div>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/playground' element={<Playground />} />
-        <Route path='/temporaire' element={<Temporaire />} />
-      </Routes>
-    </div>
+    <ThemeProvider theme={theme}>
+      <LevelContextProvider>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/playground' element={<Playground />} />
+          <Route path='/temporaire' element={<Temporaire />} />
+        </Routes>
+      </LevelContextProvider>
+    </ThemeProvider>
   );
 };
 

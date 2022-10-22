@@ -1,5 +1,6 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import socket from "../socket";
 
 interface LevelContextProps {
   children: React.ReactNode;
@@ -11,7 +12,14 @@ const LevelContext = createContext<{ data: string[] }>({
 export const LevelContextProvider: React.FC<LevelContextProps> = ({
   children,
 }) => {
-  const [level, setLevel] = useLocalStorage("level", "");
+  const [level, setLevel] = useLocalStorage("level", "0");
+  useEffect(() => {
+    socket.emit("getPosts", { token: level });
+    socket.on("receivePosts", data => {
+      console.log("received posts!");
+    });
+  }, []);
+
   return (
     <LevelContext.Provider value={{ data: [""] }}>
       {children}

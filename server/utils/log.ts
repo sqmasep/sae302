@@ -1,5 +1,5 @@
 import chalk from "chalk";
-export default {
+const log = {
   success: (msg: any) =>
     console.log(
       chalk.greenBright.bold.bgGreenBright("[✓]"),
@@ -19,3 +19,5 @@ export default {
 
   danger: (msg: any): string => chalk.red(msg),
 };
+
+export default log;

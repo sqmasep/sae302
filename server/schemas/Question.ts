@@ -1,8 +1,14 @@
 import mongoose from "mongoose";
 
 const Question = new mongoose.Schema({
-  question: [String],
-  level: Number,
+  question: {
+    type: [String],
+    required: true,
+  },
+  level: {
+    type: Number,
+    required: true,
+  },
 });
 
-export default Question;
+export default mongoose.model("Question", Question);

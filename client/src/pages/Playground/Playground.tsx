@@ -1,5 +1,8 @@
+import { Button } from "@mui/material";
 import React from "react";
-import { useLevelContext } from "../../contexts/LevelContext";
+import { useLevelContext } from "../../contexts/LevelProvider";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import socket from "../../socket";
 import styles from "./Playground.module.styl";
 
 const Card: React.FC<{ card: string }> = props => (
@@ -10,6 +13,10 @@ const Card: React.FC<{ card: string }> = props => (
 
 const Playground: React.FC = () => {
   const { data } = useLevelContext();
+  const [token] = useLocalStorage("level", "0");
+  const sendAnswer = () => {
+    socket.emit("sendAnswer", { answer: "epic", token });
+  };
   return (
     <div>
       Playground
@@ -18,6 +25,7 @@ const Playground: React.FC = () => {
           <Card card={card} />
         ))}
       </div>
+      <Button onClick={sendAnswer}>envoyer "epic"</Button>
     </div>
   );
 };

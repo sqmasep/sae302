@@ -5,4 +5,4 @@ const Post = new mongoose.Schema({
   idQuestions: [SchemaTypes.ObjectId],
 });
 
-export default Post;
+export default mongoose.model("Post", Post);
