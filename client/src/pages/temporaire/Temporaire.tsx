@@ -79,6 +79,7 @@ const Temporaire: React.FC = () => {
     if (!questions.length) return console.log("need questions");
     console.log("level: ", level);
     socket.emit("sendQuestion", { questions, level });
+    setQuestions([]);
   };
   const tabs = ["questions", "réponses"];
   const [tab, setTab] = useState(tabs[0]);
@@ -144,7 +145,7 @@ const Temporaire: React.FC = () => {
               .sort((a, b) => a.level - b.level)
               .map(question => (
                 <MenuItem value={question._id}>
-                  {question.question[0]} (level {question.level})
+                  ({question.level}) {question.question[0]}
                 </MenuItem>
               ))}
           </Select>
@@ -169,10 +170,23 @@ const Temporaire: React.FC = () => {
               )
               ?.map(question => (
                 <MenuItem value={question._id}>
-                  {question.question[0]} (level {question.level})
+                  ({question.level}) {question.question[0]}
                 </MenuItem>
               ))}
           </Select>
+          <Button
+            onClick={() =>
+              reponses.length &&
+              socket.emit("createAnswer", {
+                variants: reponses,
+                nextIdQuestion: nextQuestionSelect,
+                idQuestion: reponseSelect,
+              })
+            }
+            variant='contained'
+          >
+            créer les réponses
+          </Button>
         </Stack>
       )}
     </Container>

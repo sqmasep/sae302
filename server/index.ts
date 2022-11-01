@@ -4,15 +4,22 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
 import http from "http";
-import Question from "./schemas/Question";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { jwtVerify } from "./utils/jwt";
-import Answer from "./schemas/Answer";
-import Post from "./schemas/Post";
+import { Answer, Post, Question } from "./schemas";
+import getPostsByToken from "./utils/getPostsByToken";
 dotenv.config();
 
-interface Token {
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      JWT_SECRET_KEY: string;
+    }
+  }
+}
+
+export interface Token {
   level: number;
   question: string;
   questionId: string;
@@ -60,23 +67,61 @@ io.on("connection", async socket => {
     // socket.emit("receivePosts", posts);
   });
 
-  socket.on("sendAnswer", async ({ token, answer, idQuestion }) => {
+  socket.on("sendAnswer", async ({ token, answer }) => {
+    let decoded: Token | undefined;
     let level: Token["level"] = 0;
     try {
       console.log("token: ", token);
+
+      // if the user already answered once
       if (token && token !== "0") {
-        const decoded = (await jwtVerify(token)) as Token;
+        decoded = (await jwtVerify(token)) as Token;
         level = decoded.level;
       }
+      // find current question by level
       const currentQuestion = await Question.findOne({ level });
-      const currentAnswer = await Answer.find({
+
+      // find correct answers for current question
+      const currentAnswers = await Answer.find({
         idQuestion: currentQuestion?._id,
       });
-      console.log(currentQuestion);
-      console.log(currentAnswer);
-    } catch (error) {}
+      // console.log(currentQuestion);
+      // console.log(currentAnswers);
+
+      const matchedAnswer = currentAnswers.find(a =>
+        a.variants
+          .map(a => a.toLowerCase())
+          .includes(answer.trim().toLowerCase())
+      );
+
+      if (matchedAnswer) {
+        const nextQuestion = await Question.findById(
+          matchedAnswer.nextIdQuestion
+        );
+        log.success("Matched Answer. Passing next question");
+
+        // find posts for next level
+        const posts = await Post.find({ idQuestions: nextQuestion?._id });
+
+        // sign token (storing idQuestion & level (& maybe question index to get the same question?))
+        const token = jwt.sign(
+          { level: nextQuestion?.level || "0", idQuestion: nextQuestion?._id },
+          process.env.JWT_SECRET_KEY
+        );
+        socket.emit("receiveToken", {
+          token,
+          posts,
+          question: nextQuestion?.question,
+        });
+      } else {
+        log.info(`Answer: ${log.danger("not in variants")}`);
+      }
+    } catch (error) {
+      log.error(error);
+    }
   });
 
+  // NOTE: DEV (temporaire)
   socket.on("sendQuestion", async ({ questions, level }) => {
     log.info(`Questions: ${questions}`);
     log.info(`level: ${level}`);
@@ -87,8 +132,16 @@ io.on("connection", async socket => {
     const data = await Question.find();
     socket.emit("receiveQuestions", data);
   });
-
-  socket.on("createAnswer", data => {});
+  socket.on(
+    "createAnswer",
+    async ({ variants, nextIdQuestion, idQuestion }) => {
+      log.info(`${variants}
+      ${nextIdQuestion}
+      ${idQuestion}
+    `);
+      await Answer.create({ variants, nextIdQuestion, idQuestion });
+    }
+  );
 });
 
 server.listen(PORT, () =>

@@ -12,8 +12,7 @@ const Card: React.FC<{ card: string }> = props => (
 );
 
 const Playground: React.FC = () => {
-  const { data } = useLevelContext();
-  const [token] = useLocalStorage("level", "0");
+  const { token, posts } = useLevelContext();
   const sendAnswer = () => {
     socket.emit("sendAnswer", { answer: "epic", token });
   };
@@ -21,9 +20,9 @@ const Playground: React.FC = () => {
     <div>
       Playground
       <div>
-        {data.map(card => (
+        {/* {data.map(card => (
           <Card card={card} />
-        ))}
+        ))} */}
       </div>
       <Button onClick={sendAnswer}>envoyer "epic"</Button>
     </div>
