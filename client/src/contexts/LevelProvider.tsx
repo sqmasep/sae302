@@ -9,23 +9,39 @@ interface LevelContextProps {
 interface Values {
   token: string;
   posts: any[];
-  question: string[];
+  question: {
+    question: string[];
+  };
+  randomQuestion: string;
 }
 
 const LevelContext = createContext<Values>({
   token: "0",
   posts: [],
-  question: [],
+  question: {
+    question: [],
+  },
+  randomQuestion: "",
 });
 export const LevelContextProvider: React.FC<LevelContextProps> = ({
   children,
 }) => {
   const [token, setToken] = useLocalStorage("token", "0");
   const [posts, setPosts] = useState<any[]>([]);
-  const [question, setQuestion] = useState<string[]>([""]);
+  const [question, setQuestion] = useState<{ question: string[] }>({
+    question: [""],
+  });
+
+  const randomQuestion =
+    question?.question &&
+    question?.question[Math.floor(Math.random() * question.question.length)];
 
   useEffect(() => {
-    socket.on("getPosts", posts => setPosts(posts));
+    socket.emit("getPosts", token);
+    socket.on("receivePosts", ({ posts: newPosts, question: newQuestion }) => {
+      setQuestion(newQuestion);
+      setPosts(newPosts);
+    });
     socket.on("receiveToken", ({ token, posts, question }) => {
       setToken(token);
       setPosts(posts);
@@ -34,11 +50,11 @@ export const LevelContextProvider: React.FC<LevelContextProps> = ({
   }, []);
 
   return (
-    <LevelContext.Provider value={{ token, posts, question }}>
+    <LevelContext.Provider value={{ token, posts, question, randomQuestion }}>
       {children}
-      <pre>{JSON.stringify(token, null, 2)}</pre>
-      <pre>{JSON.stringify(posts, null, 2)}</pre>
-      <pre>{JSON.stringify(question, null, 2)}</pre>
+      {/* <pre>token:{JSON.stringify(token, null, 2)}</pre>
+      <pre>posts:{JSON.stringify(posts, null, 2)}</pre>
+      <pre>question:{JSON.stringify(question, null, 2)}</pre> */}
     </LevelContext.Provider>
   );
 };

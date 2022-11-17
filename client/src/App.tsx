@@ -16,14 +16,7 @@ const theme = createTheme({
   },
   components: {
     MuiButton: {
-      variants: [
-        {
-          props: { variant: "contained" },
-          style: {
-            fontFamily: "Readex Pro",
-          },
-        },
-      ],
+      defaultProps: {},
     },
   },
 });

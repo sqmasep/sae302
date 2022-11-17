@@ -21,12 +21,11 @@ declare global {
 
 export interface Token {
   level: number;
-  question: string;
-  questionId: string;
+  idQuestion: string;
 }
 
 mongoose
-  .connect("mongodb://127.0.0.1/testdb")
+  .connect("mongodb://127.0.0.1:27017/sae302")
   .then(() => log.success("MongoDB: connected"))
   .catch(() => log.error("MongoDB: failed to connect"));
 
@@ -50,21 +49,30 @@ app.get("/admin", (req, res) => {
   return res.status(200).send("dommage!");
 });
 
+app.get("/wp-admin", (req, res) => {
+  return res.status(200).send("wordpress, c'est la hess");
+});
+
 io.on("connection", async socket => {
   log.success(`Socket ${socket.id} connected`);
 
-  socket.on("getPosts", async ({ token }) => {
+  socket.on("getPosts", async token => {
+    let decoded: Token | undefined;
     let level: Token["level"] = 0;
     try {
       if (token && token !== "0") {
-        const decoded = (await jwtVerify(token)) as Token;
+        decoded = (await jwtVerify(token)) as Token;
+        console.log("decoded,,,", decoded);
         level = decoded.level;
       }
     } catch (error) {}
-    // TODO: select une des questions dans ce Question.find()
-    // const question = await Question.find({ level });
-    // const posts = Post.find({});
-    // socket.emit("receivePosts", posts);
+    const filter = decoded?.idQuestion
+      ? { _id: decoded?.idQuestion }
+      : { level: 0 };
+    const question = await Question.findOne(filter);
+    console.log("questions: ", question);
+    const posts = await Post.find({ idQuestions: question?._id });
+    socket.emit("receivePosts", { posts, question });
   });
 
   socket.on("sendAnswer", async ({ token, answer }) => {
@@ -76,7 +84,8 @@ io.on("connection", async socket => {
       // if the user already answered once
       if (token && token !== "0") {
         decoded = (await jwtVerify(token)) as Token;
-        level = decoded.level;
+        console.log("decoded:::", decoded);
+        level = decoded?.level;
       }
       // find current question by level
       const currentQuestion = await Question.findOne({ level });
@@ -108,10 +117,12 @@ io.on("connection", async socket => {
           { level: nextQuestion?.level || "0", idQuestion: nextQuestion?._id },
           process.env.JWT_SECRET_KEY
         );
+
+        console.log(nextQuestion?.question);
         socket.emit("receiveToken", {
           token,
           posts,
-          question: nextQuestion?.question,
+          question: nextQuestion,
         });
       } else {
         log.info(`Answer: ${log.danger("not in variants")}`);

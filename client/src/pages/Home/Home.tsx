@@ -11,7 +11,8 @@ const Home: React.FC = () => {
 
   return (
     <Container>
-      <Typography>yo</Typography>
+      <Typography variant='h1'>Interferences</Typography>
+
       <TextField onChange={e => setAnswer(e.target.value)} />
       <Button
         onClick={() => {
@@ -21,7 +22,7 @@ const Home: React.FC = () => {
         variant='contained'
         size='large'
       >
-        hello
+        voir le film
       </Button>
     </Container>
   );
