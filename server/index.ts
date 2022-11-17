@@ -9,6 +9,21 @@ import jwt from "jsonwebtoken";
 import { jwtVerify } from "./utils/jwt";
 import { Answer, Post, Question } from "./schemas";
 import getPostsByToken from "./utils/getPostsByToken";
+import multer from "multer";
+
+// TODO: remove before prod
+
+const storageLowRes = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "../client/public/imgs/preview/"),
+  filename: (req, file, cb) => cb(null, file.originalname),
+});
+const storageHighRes = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "../client/public/imgs/native/"),
+  filename: (req, file, cb) => cb(null, file.originalname),
+});
+const uploadLowRes = multer({ storage: storageLowRes });
+const uploadHighRes = multer({ storage: storageHighRes });
+
 dotenv.config();
 
 declare global {
@@ -52,6 +67,14 @@ app.get("/admin", (req, res) => {
 app.get("/wp-admin", (req, res) => {
   return res.status(200).send("wordpress, c'est la hess");
 });
+
+// TODO: remove before prod
+app.post("/uploadLowRes", uploadLowRes.single("lowResImg"), () =>
+  console.log("upload succeeeded!")
+);
+app.post("/uploadHighRes", uploadHighRes.single("highResImg"), () =>
+  console.log("upload succeeeded!")
+);
 
 io.on("connection", async socket => {
   log.success(`Socket ${socket.id} connected`);

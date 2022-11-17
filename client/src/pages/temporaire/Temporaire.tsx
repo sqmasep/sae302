@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
@@ -17,6 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
+import axios from "axios";
 
 const CreateMultiplePossibilities: React.FC<{
   setState: any;
@@ -81,7 +82,7 @@ const Temporaire: React.FC = () => {
     socket.emit("sendQuestion", { questions, level });
     setQuestions([]);
   };
-  const tabs = ["questions", "réponses"];
+  const tabs = ["questions", "réponses", "post"];
   const [tab, setTab] = useState(tabs[0]);
   const handleTabs = (_, value) => setTab(value);
 
@@ -89,6 +90,9 @@ const Temporaire: React.FC = () => {
     socket.emit("getQuestions");
     socket.on("receiveQuestions", data => setDataQuestions(data));
   }, [tab]);
+
+  const lowResImgRef = useRef();
+  const highResImgRef = useRef();
 
   return (
     <Container>
@@ -188,6 +192,63 @@ const Temporaire: React.FC = () => {
             créer les réponses
           </Button>
         </Stack>
+      )}
+      {tab === "post" && (
+        <Box>
+          <Formik
+            initialValues={{ idQuestions: [] }}
+            onSubmit={d => {
+              const formLowRes = new FormData();
+              formLowRes.append("lowResImg", lowResImgRef?.current.files[0]);
+              axios.post("http://localhost:3001/uploadLowRes", formLowRes);
+
+              const formHighRes = new FormData();
+              formHighRes.append("highResImg", highResImgRef?.current.files[0]);
+              axios.post("http://localhost:3001/uploadHighRes", formHighRes);
+            }}
+          >
+            {({ values, touched, handleChange, handleBlur, handleSubmit }) => {
+              return (
+                <Form encType='multipart/form-data'>
+                  <Stack direction='column' spacing={2} mt={8}>
+                    <Box>
+                      <Typography>aperçu (low res)</Typography>
+                      <input ref={lowResImgRef} type='file' name='lowResImg' />
+                      {touched.lowResImg && <ErrorMessage name='lowResImg' />}
+                    </Box>
+                    <Box>
+                      <Typography>high res</Typography>
+                      <input
+                        ref={highResImgRef}
+                        type='file'
+                        name='highResImg'
+                      />
+                      {touched.highResImg && <ErrorMessage name='highResImg' />}
+                    </Box>
+                  </Stack>
+                  <pre>{JSON.stringify(dataQuestions, null, 2)}</pre>
+                  <pre>{JSON.stringify(questions, null, 2)}</pre>
+                  <Select
+                    multiple
+                    value={values.idQuestions}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    name='idQuestions'
+                    fullWidth
+                  >
+                    {dataQuestions?.map(q => (
+                      <MenuItem value={q._id}>
+                        ({q.level}) {q.question[0]}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <pre>{JSON.stringify(values, null, 2)}</pre>
+                  <Button type='submit'>envoyer</Button>
+                </Form>
+              );
+            }}
+          </Formik>
+        </Box>
       )}
     </Container>
   );
