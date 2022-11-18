@@ -107,6 +107,7 @@ io.on("connection", async socket => {
     const question = await Question.findOne(filter);
     console.log("questions: ", question);
     const posts = await Post.find({ idQuestions: question?._id });
+    console.log("posts::::", posts);
     socket.emit("receivePosts", { posts, question });
   });
 

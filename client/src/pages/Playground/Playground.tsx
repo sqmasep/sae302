@@ -70,9 +70,20 @@ const Playground: React.FC = () => {
         <Typography variant='h2' component='h1'>
           Ressources
         </Typography>
-        <Stack spacing={4}>
+        <Stack alignItems='center' spacing={4}>
           <Typography fontWeight={900}>{randomQuestion}</Typography>
-          <Button>Répondre</Button>
+          <Formik initialValues={{ answer: "" }} onSubmit={sendAnswer}>
+            {({ values, errors, isSubmitting, touched }) => {
+              return (
+                <Form>
+                  <Stack alignItems='center' spacing={2}>
+                    <Field as={TextField} name='answer' />
+                    <Button type='submit'>Répondre</Button>
+                  </Stack>
+                </Form>
+              );
+            }}
+          </Formik>
         </Stack>
       </Stack>
       <Grid container>
@@ -82,17 +93,6 @@ const Playground: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-      <Formik initialValues={{ answer: "" }} onSubmit={sendAnswer}>
-        {({ values, errors, isSubmitting, touched }) => {
-          return (
-            <Form>
-              <Field as={TextField} name='answer' />
-              <pre>{JSON.stringify(values, null, 2)}</pre>
-              <Button type='submit'>envoyer {values.answer}</Button>
-            </Form>
-          );
-        }}
-      </Formik>
     </Container>
   );
 };
