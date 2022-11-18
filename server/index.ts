@@ -4,25 +4,21 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
 import http from "http";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import jwt from "jsonwebtoken";
 import { jwtVerify } from "./utils/jwt";
-import { Answer, Post, Question } from "./schemas";
 import getPostsByToken from "./utils/getPostsByToken";
 import multer from "multer";
+import Question from "./schemas/Question";
+import Post from "./schemas/Post";
+import Answer from "./schemas/Answer";
 
 // TODO: remove before prod
-
-const storageLowRes = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "../client/public/imgs/preview/"),
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "../client/public/imgs/playground/"),
   filename: (req, file, cb) => cb(null, file.originalname),
 });
-const storageHighRes = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "../client/public/imgs/native/"),
-  filename: (req, file, cb) => cb(null, file.originalname),
-});
-const uploadLowRes = multer({ storage: storageLowRes });
-const uploadHighRes = multer({ storage: storageHighRes });
+const upload = multer({ storage });
 
 dotenv.config();
 
@@ -69,11 +65,27 @@ app.get("/wp-admin", (req, res) => {
 });
 
 // TODO: remove before prod
-app.post("/uploadLowRes", uploadLowRes.single("lowResImg"), () =>
-  console.log("upload succeeeded!")
-);
-app.post("/uploadHighRes", uploadHighRes.single("highResImg"), () =>
-  console.log("upload succeeeded!")
+app.post(
+  "/getBothImgs",
+  upload.fields([
+    { name: "lowResImg", maxCount: 1 },
+    { name: "highResImg", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    // @ts-ignore
+    const sourceLowRes = req.files?.lowResImg[0].filename;
+    // @ts-ignore
+    const sourceHighRes = req.files?.highResImg[0].filename;
+
+    const idQuestions: string[] = req.body.idQuestions.split(",");
+
+    await Post.create({
+      idQuestions,
+      sourceLowRes,
+      sourceHighRes,
+    });
+    log.success("files sent successfully. Instance Post created");
+  }
 );
 
 io.on("connection", async socket => {

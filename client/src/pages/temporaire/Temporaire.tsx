@@ -197,14 +197,12 @@ const Temporaire: React.FC = () => {
         <Box>
           <Formik
             initialValues={{ idQuestions: [] }}
-            onSubmit={d => {
-              const formLowRes = new FormData();
-              formLowRes.append("lowResImg", lowResImgRef?.current.files[0]);
-              axios.post("http://localhost:3001/uploadLowRes", formLowRes);
-
-              const formHighRes = new FormData();
-              formHighRes.append("highResImg", highResImgRef?.current.files[0]);
-              axios.post("http://localhost:3001/uploadHighRes", formHighRes);
+            onSubmit={async d => {
+              const formData = new FormData();
+              formData.append("lowResImg", lowResImgRef?.current.files[0]);
+              formData.append("highResImg", highResImgRef?.current.files[0]);
+              formData.append("idQuestions", d.idQuestions);
+              await axios.post("http://localhost:3001/getBothImgs", formData);
             }}
           >
             {({ values, touched, handleChange, handleBlur, handleSubmit }) => {

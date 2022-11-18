@@ -7,13 +7,10 @@ import { useLevelContext } from "../../contexts/LevelProvider";
 const Home: React.FC = () => {
   const { token } = useLevelContext();
 
-  const [answer, setAnswer] = useState("");
-
   return (
     <Container>
       <Typography variant='h1'>Interferences</Typography>
 
-      <TextField onChange={e => setAnswer(e.target.value)} />
       <Button
         onClick={() => {
           socket.emit("sendAnswer", { answer, token });

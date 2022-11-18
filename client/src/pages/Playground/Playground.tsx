@@ -1,35 +1,99 @@
-import { Button } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Box,
+  Grid,
+  Container,
+  Typography,
+  Stack,
+  IconButton,
+  Fab,
+  SxProps,
+  Theme,
+} from "@mui/material";
 import React from "react";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import socket from "../../socket";
 import styles from "./Playground.module.styl";
 import { motion } from "framer-motion";
+import { Formik, Form, Field } from "formik";
+import { Save } from "@mui/icons-material";
 
-const Card: React.FC<{ card: { source: string } }> = ({ card }) => (
-  <motion.div drag dragMomentum={false}>
-    <img draggable='false' src={card.source} />
-  </motion.div>
+const MotionBox = motion(Box);
+
+const POSITION_CONFIG: SxProps<Theme>[] = [
+  {
+    transform: "rotateZ(12deg)",
+  },
+];
+const Card: React.FC<{ card: { sourceLowRes: string } }> = ({ card }) => (
+  <MotionBox
+    whileHover={{ scale: 1.05, rotateZ: 3 }}
+    whileTap={{ scale: 0.95 }}
+    drag
+    dragMomentum={false}
+    style={{ transform: "rotateZ(12deg)" }}
+    sx={{ position: "relative" }}
+  >
+    <img draggable='false' src={`/imgs/playground/${card.sourceLowRes}`} />
+    <IconButton
+      sx={{ position: "absolute", bottom: 0, left: 0 }}
+      onClick={e => {}}
+    >
+      <Save />
+    </IconButton>
+  </MotionBox>
 );
 
 const Playground: React.FC = () => {
   const { token, posts, randomQuestion } = useLevelContext();
-  const sendAnswer = () => {
-    socket.emit("sendAnswer", { answer: "c++", token });
+  const sendAnswer = (val: { answer: string }) => {
+    console.log(val);
+    socket.emit("sendAnswer", { answer: val.answer, token });
   };
   return (
-    <div>
-      Playground
-      <div>
+    <Container>
+      <Fab
+        color='primary'
+        sx={{ position: "fixed", bottom: 0, right: 0, m: 4 }}
+      >
+        <Save />
+      </Fab>
+      <Stack
+        alignItems='center'
+        justifyContent='space-between'
+        flexWrap='wrap'
+        spacing={4}
+        py={4}
+      >
+        <Typography variant='h2' component='h1'>
+          Ressources
+        </Typography>
+        <Stack spacing={4}>
+          <Typography fontWeight={900}>{randomQuestion}</Typography>
+          <Button>Répondre</Button>
+        </Stack>
+      </Stack>
+      <Grid container>
         {posts.map(card => (
-          <Card card={card} />
+          <Grid item xs={12} sm={8} lg={2}>
+            <Card card={card} />
+          </Grid>
         ))}
-        <pre>{JSON.stringify(posts, null, 2)}</pre>
-
-        <pre>{randomQuestion}</pre>
-      </div>
-      <Button onClick={sendAnswer}>envoyer "epic"</Button>
-    </div>
+      </Grid>
+      <Formik initialValues={{ answer: "" }} onSubmit={sendAnswer}>
+        {({ values, errors, isSubmitting, touched }) => {
+          return (
+            <Form>
+              <Field as={TextField} name='answer' />
+              <pre>{JSON.stringify(values, null, 2)}</pre>
+              <Button type='submit'>envoyer {values.answer}</Button>
+            </Form>
+          );
+        }}
+      </Formik>
+    </Container>
   );
 };
 

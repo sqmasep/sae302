@@ -1,8 +1,18 @@
 import mongoose, { SchemaTypes } from "mongoose";
 
 const Post = new mongoose.Schema({
-  source: String,
-  idQuestions: [SchemaTypes.ObjectId],
+  sourceLowRes: {
+    type: String,
+    required: true,
+  },
+  sourceHighRes: {
+    type: String,
+    required: true,
+  },
+  idQuestions: {
+    type: [SchemaTypes.ObjectId],
+    ref: "Question",
+  },
 });
 
 export default mongoose.model("Post", Post);
