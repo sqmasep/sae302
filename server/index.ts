@@ -120,18 +120,22 @@ io.on("connection", async socket => {
       // if the user already answered once
       if (token && token !== "0") {
         decoded = (await jwtVerify(token)) as Token;
-        console.log("decoded:::", decoded);
+        console.log("decoded token", decoded);
         level = decoded?.level;
       }
+
       // find current question by level
-      const currentQuestion = await Question.findOne({ level });
+      const filter = decoded?.idQuestion
+        ? { _id: decoded?.idQuestion }
+        : { level: 0 };
+      const currentQuestion = await Question.findOne(filter);
 
       // find correct answers for current question
       const currentAnswers = await Answer.find({
         idQuestion: currentQuestion?._id,
       });
-      // console.log(currentQuestion);
-      // console.log(currentAnswers);
+      console.log("currentQuestion :", currentQuestion);
+      console.log("currentAnswers: ", currentAnswers);
 
       const matchedAnswer = currentAnswers.find(a =>
         a.variants
