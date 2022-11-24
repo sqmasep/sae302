@@ -13,12 +13,11 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useLevelContext } from "../../contexts/LevelProvider";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import socket from "../../socket";
-import styles from "./Playground.module.styl";
 import { motion } from "framer-motion";
 import { Formik, Form, Field } from "formik";
 import { Save } from "@mui/icons-material";
+import SavePosts from "../../components/layout/SavePosts";
 
 const MotionBox = motion(Box);
 
@@ -33,7 +32,6 @@ const Card: React.FC<{ card: { sourceLowRes: string } }> = ({ card }) => (
     whileTap={{ scale: 0.95 }}
     drag
     dragMomentum={false}
-    style={{ transform: "rotateZ(12deg)" }}
     sx={{ position: "relative" }}
   >
     <img draggable='false' src={`/imgs/playground/${card.sourceLowRes}`} />
@@ -48,24 +46,19 @@ const Card: React.FC<{ card: { sourceLowRes: string } }> = ({ card }) => (
 
 const Playground: React.FC = () => {
   const { token, posts, randomQuestion } = useLevelContext();
-  const sendAnswer = (val: { answer: string }) => {
+  const sendAnswer = (val: { answer: string }, { resetForm }) => {
     console.log(val);
     socket.emit("sendAnswer", { answer: val.answer, token });
+    resetForm();
   };
   return (
     <Container>
-      <Fab
-        color='primary'
-        sx={{ position: "fixed", bottom: 0, right: 0, m: 4 }}
-      >
-        <Save />
-      </Fab>
+      <SavePosts />
       <Stack
         alignItems='center'
         justifyContent='space-between'
         flexWrap='wrap'
         spacing={4}
-        py={4}
       >
         <Typography variant='h2' component='h1'>
           Ressources
@@ -77,7 +70,7 @@ const Playground: React.FC = () => {
               return (
                 <Form>
                   <Stack alignItems='center' spacing={2}>
-                    <Field as={TextField} name='answer' />
+                    <Field as={TextField} name='answer' size='small' />
                     <Button type='submit'>Répondre</Button>
                   </Stack>
                 </Form>

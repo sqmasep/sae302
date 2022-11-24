@@ -162,6 +162,7 @@ io.on("connection", async socket => {
         });
       } else {
         log.info(`Answer: ${log.danger("not in variants")}`);
+        socket.emit("error", "Mauvaise réponse");
       }
     } catch (error) {
       log.error(error);

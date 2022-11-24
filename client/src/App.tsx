@@ -4,7 +4,6 @@ import { Route, Routes } from "react-router-dom";
 import { LevelContextProvider } from "./contexts/LevelProvider";
 import { Home, Playground } from "./pages";
 import Temporaire from "./pages/temporaire/Temporaire";
-import gray from "@mui/material/colors/grey";
 
 const theme = createTheme({
   typography: {
