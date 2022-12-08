@@ -1,7 +1,7 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 interface Values {
-  selected: string;
+  selected: {};
 }
 
 interface PreviewProviderInterface {
@@ -13,8 +13,9 @@ const PreviewContext = createContext<Values>({
 });
 
 const PreviewProvider: React.FC<PreviewProviderInterface> = ({ children }) => {
+  const [selected, setSelected] = useState({});
   return (
-    <PreviewContext.Provider value={{ selected: "" }}>
+    <PreviewContext.Provider value={{ selected }}>
       {children}
     </PreviewContext.Provider>
   );

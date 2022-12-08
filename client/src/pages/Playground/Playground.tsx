@@ -1,76 +1,25 @@
 import {
   Button,
   TextField,
-  Box,
   Grid,
   Container,
   Typography,
   Stack,
-  Checkbox,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import socket from "../../socket";
-import { motion } from "framer-motion";
 import { Formik, Form, Field } from "formik";
-import { Save, TurnedIn, TurnedInNot } from "@mui/icons-material";
 import SavePosts from "../../components/layout/SavePosts";
-import SavedDocumentsProvider, {
-  useSavedDocuments,
-} from "../../contexts/SavedDocumentsProvider";
+import SavedDocumentsProvider from "../../contexts/SavedDocumentsProvider";
+import Card from "../../components/Card/Card";
 
-const MotionBox = motion(Box);
-
-const Card: React.FC<{ card: { id: string; sourceLowRes: string } }> = ({
-  card,
-}) => {
-  const {
-    documents: savedDocuments,
-    pushUnique,
-    remove,
-    inArray,
-  } = useSavedDocuments();
-  const [hover, setHover] = useState(false);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ) => {
-    checked ? pushUnique(e.target.value) : remove(e.target.value);
-  };
-
-  return (
-    <MotionBox
-      whileHover={{ scale: 1.05, rotateZ: 3 }}
-      whileTap={{ scale: hover ? 1.05 : 0.95 }}
-      drag
-      dragMomentum={false}
-      sx={{ position: "relative" }}
-    >
-      <pre>{JSON.stringify(card, null, 2)}</pre>
-
-      <Box
-        sx={{
-          position: "absolute",
-          inset: 0,
-          // backgroundImage: "linear-gradient(to bottom, transparent, #0005)",
-        }}
-      />
-      <img draggable='false' src={`/imgs/playground/${card.sourceLowRes}`} />
-      <Checkbox
-        icon={<TurnedInNot />}
-        checked={inArray(card.sourceLowRes)}
-        onChange={handleChange}
-        value={card.sourceLowRes}
-        onMouseDown={() => setHover(true)}
-        onMouseUp={() => setHover(false)}
-        checkedIcon={<TurnedIn />}
-        sx={{ position: "absolute", bottom: 0, left: 0 }}
-      />
-    </MotionBox>
-  );
-};
-
+export interface Document {
+  _id: string;
+  sourceLowRes: string;
+  sourceHighRes: string;
+  idQuestions: string[];
+}
 const Playground: React.FC = () => {
   const { token, posts, randomQuestion } = useLevelContext();
   const sendAnswer = (val: { answer: string }, { resetForm }) => {

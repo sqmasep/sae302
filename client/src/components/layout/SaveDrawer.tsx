@@ -1,23 +1,35 @@
-import { Box, Drawer, Stack } from "@mui/material";
+import { Box, Drawer, Stack, styled } from "@mui/material";
 import React from "react";
 import { useSavedDocuments } from "../../contexts/SavedDocumentsProvider";
+import Card from "../Card/Card";
 
 interface SaveDrawerInterface {
   isOpen: boolean;
   toggle: (forceState?: boolean) => void;
 }
 
+const StyledDrawer = styled(Drawer)(() => ({
+  "&	.MuiDrawer-paper": {
+    overflowY: "unset",
+  },
+}));
+
 const SaveDrawer: React.FC<SaveDrawerInterface> = ({ isOpen, toggle }) => {
   const { documents } = useSavedDocuments();
 
   return (
-    <Drawer onClose={() => toggle(false)} anchor='right' open={isOpen}>
+    <StyledDrawer
+      sx={{ overflowY: "unset" }}
+      onClose={() => toggle(false)}
+      anchor='right'
+      open={isOpen}
+    >
       <Stack direction='column'>
         {documents?.length
-          ? documents.map(doc => <img src={`/imgs/playground/${doc}`} />)
+          ? documents.map(doc => <Card card={doc} />)
           : "Aucun document sauvegardé"}
       </Stack>
-    </Drawer>
+    </StyledDrawer>
   );
 };
 
