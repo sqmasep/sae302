@@ -52,9 +52,6 @@ export const LevelContextProvider: React.FC<LevelContextProps> = ({
   return (
     <LevelContext.Provider value={{ token, posts, question, randomQuestion }}>
       {children}
-      {/* <pre>token:{JSON.stringify(token, null, 2)}</pre>
-      <pre>posts:{JSON.stringify(posts, null, 2)}</pre>
-      <pre>question:{JSON.stringify(question, null, 2)}</pre> */}
     </LevelContext.Provider>
   );
 };
