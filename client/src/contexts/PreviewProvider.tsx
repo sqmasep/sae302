@@ -1,4 +1,3 @@
-import { AnimatePresence, motion } from "framer-motion";
 import React, { createContext, useContext, useState } from "react";
 import { Document } from "../pages/Playground/Playground";
 
@@ -24,7 +23,6 @@ const PreviewProvider: React.FC<PreviewProviderInterface> = ({ children }) => {
   return (
     <PreviewContext.Provider value={{ selectedDocument, setSelectedDocument }}>
       {children}
-      <pre>{JSON.stringify(selectedDocument, null, 2)}</pre>
     </PreviewContext.Provider>
   );
 };
