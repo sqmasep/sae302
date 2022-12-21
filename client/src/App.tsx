@@ -2,6 +2,7 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { LevelContextProvider } from "./contexts/LevelProvider";
+import PreviewProvider from "./contexts/PreviewProvider";
 import { Home, Playground } from "./pages";
 import Temporaire from "./pages/temporaire/Temporaire";
 
@@ -57,11 +58,13 @@ const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <LevelContextProvider>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/playground' element={<Playground />} />
-          <Route path='/temporaire' element={<Temporaire />} />
-        </Routes>
+        <PreviewProvider>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/playground' element={<Playground />} />
+            <Route path='/temporaire' element={<Temporaire />} />
+          </Routes>
+        </PreviewProvider>
       </LevelContextProvider>
     </ThemeProvider>
   );

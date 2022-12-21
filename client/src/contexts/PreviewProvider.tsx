@@ -1,7 +1,10 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React, { createContext, useContext, useState } from "react";
+import { Document } from "../pages/Playground/Playground";
 
 interface Values {
-  selected: {};
+  selectedDocument: Document | null;
+  setSelectedDocument: React.Dispatch<React.SetStateAction<Document | null>>;
 }
 
 interface PreviewProviderInterface {
@@ -9,14 +12,19 @@ interface PreviewProviderInterface {
 }
 
 const PreviewContext = createContext<Values>({
-  selected: "",
+  selectedDocument: null,
+  setSelectedDocument: () => {},
 });
 
 const PreviewProvider: React.FC<PreviewProviderInterface> = ({ children }) => {
-  const [selected, setSelected] = useState({});
+  const [selectedDocument, setSelectedDocument] = useState<Document | null>(
+    null
+  );
+
   return (
-    <PreviewContext.Provider value={{ selected }}>
+    <PreviewContext.Provider value={{ selectedDocument, setSelectedDocument }}>
       {children}
+      <pre>{JSON.stringify(selectedDocument, null, 2)}</pre>
     </PreviewContext.Provider>
   );
 };

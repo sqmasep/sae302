@@ -11,6 +11,8 @@ interface SaveDrawerInterface {
 const StyledDrawer = styled(Drawer)(() => ({
   "&	.MuiDrawer-paper": {
     overflowY: "unset",
+    maxWidth: "20rem",
+    paddingInline: "3rem",
   },
 }));
 
@@ -18,15 +20,10 @@ const SaveDrawer: React.FC<SaveDrawerInterface> = ({ isOpen, toggle }) => {
   const { documents } = useSavedDocuments();
 
   return (
-    <StyledDrawer
-      sx={{ overflowY: "unset" }}
-      onClose={() => toggle(false)}
-      anchor='right'
-      open={isOpen}
-    >
+    <StyledDrawer onClose={() => toggle(false)} anchor='right' open={isOpen}>
       <Stack direction='column'>
         {documents?.length
-          ? documents.map(doc => <Card card={doc} />)
+          ? documents.map(doc => <Card key={doc._id} card={doc} />)
           : "Aucun document sauvegardé"}
       </Stack>
     </StyledDrawer>

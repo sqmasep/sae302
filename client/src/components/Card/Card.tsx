@@ -7,7 +7,9 @@ import { Document } from "../../pages/Playground/Playground";
 
 const MotionBox = motion(Box);
 
-const Card: React.FC<{ card: Document }> = ({ card }) => {
+const Card: React.FC<
+  { card: Document } & Omit<React.ComponentProps<typeof MotionBox>, "ref">
+> = ({ card, ...props }) => {
   const { pushUnique, remove, inArray } = useSavedDocuments();
   const [hover, setHover] = useState(false);
 
@@ -20,6 +22,7 @@ const Card: React.FC<{ card: Document }> = ({ card }) => {
 
   return (
     <MotionBox
+      {...props}
       whileHover={{ scale: 1.05, rotateZ: 3 }}
       whileTap={{ scale: hover ? 1.05 : 0.95 }}
       drag
@@ -41,6 +44,7 @@ const Card: React.FC<{ card: Document }> = ({ card }) => {
         checked={inArray(card)}
         onChange={handleChange}
         value={card.sourceLowRes}
+        onClick={e => e.stopPropagation()}
         onMouseDown={() => setHover(true)}
         onMouseUp={() => setHover(false)}
         checkedIcon={<TurnedIn />}

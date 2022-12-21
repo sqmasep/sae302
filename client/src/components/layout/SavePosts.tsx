@@ -14,7 +14,7 @@ const SavePosts: React.FC = () => {
         <Fab
           color='primary'
           sx={{ position: "fixed", bottom: 0, right: 0, m: 4 }}
-          onClick={toggle}
+          onClick={() => toggle()}
         >
           <Save />
         </Fab>

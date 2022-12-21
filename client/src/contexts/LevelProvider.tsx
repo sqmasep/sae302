@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
+import { Document } from "../pages/Playground/Playground";
 import socket from "../socket";
 
 interface LevelContextProps {
@@ -8,7 +9,7 @@ interface LevelContextProps {
 
 interface Values {
   token: string;
-  posts: any[];
+  posts: Document[];
   question: {
     question: string[];
   };
@@ -27,7 +28,7 @@ export const LevelContextProvider: React.FC<LevelContextProps> = ({
   children,
 }) => {
   const [token, setToken] = useLocalStorage("token", "0");
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Document[]>([]);
   const [question, setQuestion] = useState<{ question: string[] }>({
     question: [""],
   });
