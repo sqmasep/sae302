@@ -11,7 +11,7 @@ interface SaveDrawerInterface {
 
 const StyledDrawer = styled(Drawer)(() => ({
   "&	.MuiDrawer-paper": {
-    overflowY: "unset",
+    overflowY: "auto",
     maxWidth: "20rem",
     paddingInline: "3rem",
   },
@@ -23,15 +23,21 @@ const SaveDrawer: React.FC<SaveDrawerInterface> = ({ isOpen, toggle }) => {
 
   return (
     <StyledDrawer onClose={() => toggle(false)} anchor='right' open={isOpen}>
-      <Stack direction='column'>
+      <Stack direction='column' gap={4}>
         {documents?.length
           ? documents.map(doc => (
               <Card
                 controls
-                layoutId={doc._id}
-                onClick={() => setSelectedDocument(doc)}
                 key={doc._id}
                 card={doc}
+                layoutId={doc._id}
+                onTap={() => setSelectedDocument(doc)}
+                initial={{ transformOrigin: "bottom" }}
+                whileHover={{
+                  scale: 1.05,
+                  rotateZ: -5,
+                }}
+                whileTap={{ scale: 0.95 }}
               />
             ))
           : "Aucun document sauvegardé"}
