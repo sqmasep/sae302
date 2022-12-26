@@ -13,6 +13,7 @@ import { Formik, Form, Field } from "formik";
 import SavePosts from "../../components/layout/SavePosts";
 import SavedDocumentsProvider from "../../contexts/SavedDocumentsProvider";
 import PlaygroundPosts from "../../components/layout/PlaygroundPosts";
+import { AnimatePresence, motion } from "framer-motion";
 
 export interface Document {
   _id: string;
@@ -36,7 +37,7 @@ const Playground: React.FC = () => {
     <SavedDocumentsProvider>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        open={error}
+        open={!!error}
         // onClose={handleClose}
         message={error}
         color='error'
@@ -53,7 +54,32 @@ const Playground: React.FC = () => {
             Ressources
           </Typography>
           <Stack alignItems='center' spacing={4}>
-            <Typography fontWeight={900}>{randomQuestion}</Typography>
+            <AnimatePresence mode='wait'>
+              {randomQuestion && (
+                <motion.div
+                  key={randomQuestion}
+                  initial={{
+                    opacity: 0,
+                    y: 100,
+                    scale: 0.9,
+                  }}
+                  animate={{
+                    opacity: [0, 1, 1],
+                    y: 0,
+                    scale: 1,
+                    transition: { duration: 0.5 },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: -100,
+                    scale: 0.9,
+                    transition: { duration: 0.3 },
+                  }}
+                >
+                  <Typography fontWeight={900}>{randomQuestion}</Typography>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <Formik initialValues={{ answer: "" }} onSubmit={sendAnswer}>
               {() => {
                 return (
