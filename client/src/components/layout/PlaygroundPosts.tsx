@@ -76,21 +76,22 @@ const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
   const { setSelectedDocument } = usePreview();
 
   return (
-    <motion.div>
-      <Card
-        key={`card-${card._id}`}
-        layoutId={card._id}
-        card={card}
-        controls
-        drag
-        onDragStart={() => setDragging(true)}
-        onDragEnd={() => setDragging(false)}
-        onPointerUp={() => !dragging && !saving && setSelectedDocument(card)}
-        saving={saving}
-        setSaving={setSaving}
-        style={{ cursor: dragging ? "grabbing" : "pointer" }}
-      />
-    </motion.div>
+    <Card
+      key={`card-${card._id}`}
+      layoutId={card._id}
+      card={card}
+      controls
+      drag
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1, transition: { duration: 0.5 } }}
+      exit={{ y: -50, opacity: 0 }}
+      onDragStart={() => setDragging(true)}
+      onDragEnd={() => setDragging(false)}
+      onPointerUp={() => !dragging && !saving && setSelectedDocument(card)}
+      saving={saving}
+      setSaving={setSaving}
+      style={{ cursor: dragging ? "grabbing" : "pointer" }}
+    />
   );
 };
 

@@ -1,5 +1,12 @@
-import { Button, TextField, Container, Typography, Stack } from "@mui/material";
-import React from "react";
+import {
+  Button,
+  TextField,
+  Container,
+  Typography,
+  Stack,
+  Snackbar,
+} from "@mui/material";
+import React, { useState } from "react";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import socket from "../../socket";
 import { Formik, Form, Field } from "formik";
@@ -15,14 +22,25 @@ export interface Document {
 }
 const Playground: React.FC = () => {
   const { token, randomQuestion } = useLevelContext();
+  const [error, setError] = useState<string | null>(null);
   const sendAnswer = (val: { answer: string }, { resetForm }) => {
     console.log(val);
     socket.emit("sendAnswer", { answer: val.answer, token });
     resetForm();
   };
 
+  socket.on("error", err => setError(err));
+  socket.on("win", () => console.log("you win!"));
+
   return (
     <SavedDocumentsProvider>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={error}
+        // onClose={handleClose}
+        message={error}
+        color='error'
+      />
       <Container>
         <SavePosts />
         <Stack

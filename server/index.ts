@@ -64,7 +64,7 @@ app.get("/wp-admin", (req, res) => {
   return res.status(200).send("wordpress, c'est la hess");
 });
 
-// TODO: remove before prod
+// TODO: remove app.post stuff before prod
 app.post(
   "/getBothImgs",
   upload.fields([
@@ -106,8 +106,10 @@ io.on("connection", async socket => {
       : { level: 0 };
     const question = await Question.findOne(filter);
     console.log("questions: ", question);
+
     const posts = await Post.find({ idQuestions: question?._id });
     console.log("posts::::", posts);
+
     socket.emit("receivePosts", { posts, question });
   });
 
@@ -143,31 +145,33 @@ io.on("connection", async socket => {
           .includes(answer.trim().toLowerCase())
       );
 
-      if (matchedAnswer) {
-        const nextQuestion = await Question.findById(
-          matchedAnswer.nextIdQuestion
-        );
-        log.success("Matched Answer. Passing next question");
-
-        // find posts for next level
-        const posts = await Post.find({ idQuestions: nextQuestion?._id });
-
-        // sign token (storing idQuestion & level (& maybe question index to get the same question?))
-        const token = jwt.sign(
-          { level: nextQuestion?.level || "0", idQuestion: nextQuestion?._id },
-          process.env.JWT_SECRET_KEY
-        );
-
-        console.log(nextQuestion?.question);
-        socket.emit("receiveToken", {
-          token,
-          posts,
-          question: nextQuestion,
-        });
-      } else {
+      if (!matchedAnswer) {
         log.info(`Answer: ${log.danger("not in variants")}`);
-        socket.emit("error", "Mauvaise réponse");
+        return socket.emit("error", "Mauvaise réponse");
       }
+
+      if (matchedAnswer.last) return socket.emit("win");
+
+      const nextQuestion = await Question.findById(
+        matchedAnswer.nextIdQuestion
+      );
+      log.success("Matched Answer. Passing next question");
+
+      // find posts for next level
+      const posts = await Post.find({ idQuestions: nextQuestion?._id });
+
+      // sign token (storing idQuestion & level (& maybe question index to get the same question?))
+      const newToken = jwt.sign(
+        { level: nextQuestion?.level || "0", idQuestion: nextQuestion?._id },
+        process.env.JWT_SECRET_KEY
+      );
+
+      console.log(nextQuestion?.question);
+      socket.emit("receiveToken", {
+        token: newToken,
+        posts,
+        question: nextQuestion,
+      });
     } catch (error) {
       log.error(error);
     }
@@ -186,12 +190,14 @@ io.on("connection", async socket => {
   });
   socket.on(
     "createAnswer",
-    async ({ variants, nextIdQuestion, idQuestion }) => {
+    async ({ variants, nextIdQuestion, idQuestion, last = false }) => {
       log.info(`${variants}
       ${nextIdQuestion}
       ${idQuestion}
+      ${last}
     `);
-      await Answer.create({ variants, nextIdQuestion, idQuestion });
+      last && (nextIdQuestion = null);
+      await Answer.create({ variants, nextIdQuestion, idQuestion, last });
     }
   );
 });

@@ -6,7 +6,9 @@ import socket from "../../socket";
 import {
   Box,
   Button,
+  Checkbox,
   Container,
+  FormControlLabel,
   IconButton,
   MenuItem,
   Select,
@@ -74,6 +76,7 @@ const Temporaire: React.FC = () => {
   const [reponses, setReponses] = useState<string[]>([]);
   const [dataQuestions, setDataQuestions] = useState<any[]>([]);
   const [reponseSelect, setReponseSelect] = useState("");
+  const [isLastAnswerBeforeWin, setIsLastAnswerBeforeWin] = useState(false);
   const [nextQuestionSelect, setNextQuestionSelect] = useState("");
 
   const sendQuestions = ({ level }: any) => {
@@ -127,7 +130,7 @@ const Temporaire: React.FC = () => {
                     label='level'
                     type='number'
                   />
-                  <Button type='submit' variant='contained'>
+                  <Button sx={{ mt: 4 }} type='submit' variant='contained'>
                     envoyer les questions!
                   </Button>
                   <ErrorMessage name='level' />
@@ -178,13 +181,21 @@ const Temporaire: React.FC = () => {
                 </MenuItem>
               ))}
           </Select>
+          <FormControlLabel
+            checked={isLastAnswerBeforeWin}
+            onChange={() => setIsLastAnswerBeforeWin(prev => !prev)}
+            label='dernière réponse avant le win ?'
+            control={<Checkbox />}
+          />
           <Button
+            sx={{ mt: 4 }}
             onClick={() =>
               reponses.length &&
               socket.emit("createAnswer", {
                 variants: reponses,
                 nextIdQuestion: nextQuestionSelect,
                 idQuestion: reponseSelect,
+                last: isLastAnswerBeforeWin,
               })
             }
             variant='contained'
@@ -224,8 +235,6 @@ const Temporaire: React.FC = () => {
                       {touched.highResImg && <ErrorMessage name='highResImg' />}
                     </Box>
                   </Stack>
-                  <pre>{JSON.stringify(dataQuestions, null, 2)}</pre>
-                  <pre>{JSON.stringify(questions, null, 2)}</pre>
                   <Select
                     multiple
                     value={values.idQuestions}
@@ -240,8 +249,9 @@ const Temporaire: React.FC = () => {
                       </MenuItem>
                     ))}
                   </Select>
-                  <pre>{JSON.stringify(values, null, 2)}</pre>
-                  <Button type='submit'>envoyer</Button>
+                  <Button fullWidth sx={{ mt: 4 }} type='submit'>
+                    envoyer
+                  </Button>
                 </Form>
               );
             }}
