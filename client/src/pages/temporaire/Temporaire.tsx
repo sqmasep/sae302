@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 import { z } from "zod";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import socket from "../../socket";
+import socket from "../../lib/socket";
 import {
   Box,
   Button,

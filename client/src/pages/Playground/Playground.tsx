@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useLevelContext } from "../../contexts/LevelProvider";
-import socket from "../../socket";
+import socket from "../../lib/socket";
 import { Formik, Form, Field } from "formik";
 import SavePosts from "../../components/layout/SavePosts";
 import SavedDocumentsProvider from "../../contexts/SavedDocumentsProvider";

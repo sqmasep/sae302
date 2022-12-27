@@ -1,5 +1,5 @@
 import { TurnedIn, TurnedInNot } from "@mui/icons-material";
-import { Box, Checkbox } from "@mui/material";
+import { Box, Checkbox, Tooltip, Zoom } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { useSavedDocuments } from "../../contexts/SavedDocumentsProvider";
@@ -66,16 +66,22 @@ const Card: React.FC<
       </motion.div>
       {/* save checkbox */}
       {controls && (
-        <MotionCheckbox
-          icon={<TurnedInNot />}
-          checked={inArray(card)}
-          onChange={handleChange}
-          onTapStart={() => setSaving(true)}
-          onTap={() => setSaving(false)}
-          value={card.sourceLowRes}
-          checkedIcon={<TurnedIn />}
-          sx={{ position: "absolute", bottom: 0, left: 0 }}
-        />
+        <Tooltip
+          placement='top'
+          TransitionComponent={Zoom}
+          title={inArray(card) ? "Retirer" : "Sauvegarder"}
+        >
+          <MotionCheckbox
+            icon={<TurnedInNot />}
+            checked={inArray(card)}
+            onChange={handleChange}
+            onTapStart={() => setSaving(true)}
+            onTap={() => setSaving(false)}
+            value={card.sourceLowRes}
+            checkedIcon={<TurnedIn />}
+            sx={{ position: "absolute", bottom: 0, left: 0 }}
+          />
+        </Tooltip>
       )}
     </MotionBox>
   );

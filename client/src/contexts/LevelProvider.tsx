@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { Document } from "../pages/Playground/Playground";
-import socket from "../socket";
+import socket from "../lib/socket";
 
 interface LevelContextProps {
   children: React.ReactNode;
