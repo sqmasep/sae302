@@ -27,7 +27,7 @@ const LevelContext = createContext<Values>({
 export const LevelContextProvider: React.FC<LevelContextProps> = ({
   children,
 }) => {
-  const [token, setToken] = useLocalStorage("token", "0");
+  const [token, setToken] = useLocalStorage("interferences-token", "0");
   const [posts, setPosts] = useState<Document[]>([]);
   const [question, setQuestion] = useState<{ question: string[] }>({
     question: [""],

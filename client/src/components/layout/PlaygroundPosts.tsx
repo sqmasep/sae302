@@ -31,12 +31,15 @@ const childrenVariants: Variants = {
   exit: { y: -50, opacity: 0 },
 };
 
-const PlaygroundPosts: React.FC = () => {
+const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
+  ...props
+}) => {
   const { posts } = useLevelContext();
   const { selectedDocument, setSelectedDocument } = usePreview();
 
   return posts.length ? (
     <MotionGrid
+      {...props}
       variants={parentVariants}
       initial='hidden'
       animate='show'

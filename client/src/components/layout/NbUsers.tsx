@@ -1,6 +1,9 @@
 import { Box, Stack, Typography } from "@mui/material";
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import useNbUsers from "../../hooks/useNbUsers";
+
+const MotionTypography = motion(Typography);
 
 const NbUsers: React.FC = () => {
   const nbUsers = useNbUsers();
@@ -25,7 +28,16 @@ const NbUsers: React.FC = () => {
           aspectRatio: "1",
         }}
       />
-      <Typography>{nbUsers}</Typography>
+      <AnimatePresence mode='wait'>
+        <MotionTypography
+          initial={{ y: 5, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 10, opacity: 0 }}
+          key={nbUsers}
+        >
+          {nbUsers}
+        </MotionTypography>
+      </AnimatePresence>
     </Stack>
   );
 };

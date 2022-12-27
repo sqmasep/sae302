@@ -5,11 +5,13 @@ import {
   Typography,
   Stack,
   Snackbar,
+  Alert,
+  Slide,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import socket from "../../lib/socket";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import SavePosts from "../../components/layout/SavePosts";
 import SavedDocumentsProvider from "../../contexts/SavedDocumentsProvider";
 import PlaygroundPosts from "../../components/layout/PlaygroundPosts";
@@ -21,30 +23,52 @@ export interface Document {
   sourceHighRes: string;
   idQuestions: string[];
 }
+
+interface AnswerInterface {
+  answer: string;
+}
+
+interface SnackbarInterface {
+  msg?: string;
+  isOpen: boolean;
+}
+
 const Playground: React.FC = () => {
   const { token, randomQuestion } = useLevelContext();
-  const [error, setError] = useState<string | null>(null);
-  const sendAnswer = (val: { answer: string }, { resetForm }) => {
-    console.log(val);
-    socket.emit("sendAnswer", { answer: val.answer, token });
+  const [{ msg, isOpen }, setSnackbar] = useState<SnackbarInterface>({
+    isOpen: false,
+  });
+
+  const sendAnswer = (
+    val: AnswerInterface,
+    { resetForm }: FormikHelpers<AnswerInterface>
+  ) => {
+    val.answer.trim().length &&
+      socket.emit("sendAnswer", { answer: val.answer, token });
     resetForm();
   };
 
-  socket.on("error", err => setError(err));
+  socket.on("error", msg => setSnackbar({ msg, isOpen: true }));
   socket.on("win", () => console.log("you win!"));
 
+  const handleClose = () => {
+    setSnackbar(prev => ({ ...prev, isOpen: false }));
+  };
+
   return (
-    <SavedDocumentsProvider>
+    <>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        open={!!error}
-        onClose={() => setError(null)}
+        open={isOpen}
+        TransitionComponent={Slide}
+        onClose={handleClose}
         autoHideDuration={6000}
-        message={error}
-        color='error'
-      />
+      >
+        <Alert onClose={handleClose} severity='error'>
+          {msg}
+        </Alert>
+      </Snackbar>
       <Container>
-        <SavePosts />
         <Stack
           alignItems='center'
           justifyContent='space-between'
@@ -52,9 +76,9 @@ const Playground: React.FC = () => {
           spacing={4}
         >
           <Typography variant='h2' component='h1'>
-            Ressources
+            RESSOURCES
           </Typography>
-          <Stack alignItems='center' spacing={4}>
+          <Stack alignItems='center' gap={4}>
             <AnimatePresence mode='wait'>
               {randomQuestion && (
                 <motion.div
@@ -95,10 +119,12 @@ const Playground: React.FC = () => {
             </Formik>
           </Stack>
         </Stack>
-
-        <PlaygroundPosts />
+        <SavedDocumentsProvider>
+          <SavePosts />
+          <PlaygroundPosts />
+        </SavedDocumentsProvider>
       </Container>
-    </SavedDocumentsProvider>
+    </>
   );
 };
 
