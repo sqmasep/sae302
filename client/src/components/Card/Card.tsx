@@ -68,6 +68,22 @@ const Card: React.FC<
           style={{ maxWidth: "100%", maxHeight: "100vh", objectFit: "contain" }}
           src={`/imgs/playground/${imgSource}`}
         />
+        {/* blur box */}
+        <Box
+          sx={{
+            position: "absolute",
+            width: "75%",
+            left: "50%",
+            bottom: ".5rem",
+            transform: "translateX(-50%)",
+            height: "2rem",
+            borderRadius: "50%",
+            backgroundImage: `url(/imgs/playground/${imgSource})`,
+            filter: "blur(2rem)",
+            backgroundSize: "cover",
+            opacity: 0.5,
+          }}
+        />
         {/* save checkbox */}
         {controls && (
           <Tooltip

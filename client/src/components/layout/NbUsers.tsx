@@ -18,6 +18,7 @@ const NbUsers: React.FC = () => {
         bottom: 0,
         left: 0,
         m: 4,
+        zIndex: 1050,
       }}
     >
       <Box

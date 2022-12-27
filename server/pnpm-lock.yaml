@@ -19,6 +19,7 @@ specifiers:
   socket.io: ^4.5.3
   ts-node: ^10.9.1
   typescript: ^4.8.4
+  zod: ^3.20.2
 
 dependencies:
   chalk: 4.1.2
@@ -30,6 +31,7 @@ dependencies:
   multer: 1.4.5-lts.1
   redis: 4.3.1
   socket.io: 4.5.3
+  zod: 3.20.2
 
 devDependencies:
   '@types/cors': 2.8.12
@@ -1398,3 +1400,7 @@ packages:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
     dev: true
+
+  /zod/3.20.2:
+    resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
+    dev: false

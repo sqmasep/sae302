@@ -4,8 +4,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { Server } from "socket.io";
 import http from "http";
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
+import { z } from "zod";
 import { jwtVerify } from "./utils/jwt";
 import getPostsByToken from "./utils/getPostsByToken";
 import multer from "multer";
@@ -122,14 +123,21 @@ io.on("connection", async socket => {
   });
 
   socket.on("sendAnswer", async ({ token, answer }) => {
+    // parsing data
+    const tokenSchema = z.string();
+    const answerSchema = z.string();
+
     let decoded: Token | undefined;
     let level: Token["level"] = 0;
+
     try {
-      console.log("token: ", token);
+      const parsedToken = tokenSchema.parse(token);
+      console.log("parsedToken:", parsedToken);
+      const parsedAnswer = answerSchema.parse(answer);
 
       // if the user already answered once
-      if (token && token !== "0") {
-        decoded = (await jwtVerify(token)) as Token;
+      if (parsedToken && parsedToken !== "0") {
+        decoded = (await jwtVerify(parsedToken)) as Token;
         console.log("decoded token", decoded);
         level = decoded?.level;
       }
@@ -150,7 +158,7 @@ io.on("connection", async socket => {
       const matchedAnswer = currentAnswers.find(a =>
         a.variants
           .map(a => a.toLowerCase())
-          .includes(answer.trim().toLowerCase())
+          .includes(parsedAnswer.trim().toLowerCase())
       );
 
       if (!matchedAnswer) {
@@ -182,6 +190,7 @@ io.on("connection", async socket => {
       });
     } catch (error) {
       log.error(error);
+      socket.emit("error", "Une erreur interne est survenue.");
     }
   });
 
