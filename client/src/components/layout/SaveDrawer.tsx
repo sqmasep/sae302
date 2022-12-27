@@ -1,4 +1,5 @@
 import { Drawer, Stack, styled, Typography } from "@mui/material";
+import { AnimatePresence, AnimateSharedLayout } from "framer-motion";
 import React, { useState } from "react";
 import { usePreview } from "../../contexts/PreviewProvider";
 import { useSavedDocuments } from "../../contexts/SavedDocumentsProvider";
@@ -30,7 +31,13 @@ const SaveDrawer: React.FC<SaveDrawerInterface> = ({ isOpen, toggle }) => {
     <StyledDrawer onClose={() => toggle(false)} anchor='right' open={isOpen}>
       <Stack direction='column' gap={4}>
         {documents?.length ? (
-          documents.map(doc => <CardWrapper key={doc._id} card={doc} />)
+          <AnimateSharedLayout>
+            <AnimatePresence mode='wait'>
+              {documents.map(doc => (
+                <CardWrapper key={doc._id} card={doc} />
+              ))}
+            </AnimatePresence>
+          </AnimateSharedLayout>
         ) : (
           <Typography textAlign='center' fontSize={24}>
             Aucun document sauvegardé
@@ -57,6 +64,9 @@ const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
         scale: 1.05,
         rotateZ: -5,
       }}
+      initial={{ y: 10 }}
+      animate={{ y: 0 }}
+      exit={{ y: -50 }}
       saving={saving}
       setSaving={setSaving}
       whileTap={{ scale: !saving ? 0.95 : 1 }}

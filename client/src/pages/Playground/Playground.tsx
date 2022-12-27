@@ -38,7 +38,8 @@ const Playground: React.FC = () => {
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={!!error}
-        // onClose={handleClose}
+        onClose={() => setError(null)}
+        autoHideDuration={6000}
         message={error}
         color='error'
       />

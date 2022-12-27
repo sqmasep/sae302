@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { Box, Grid } from "@mui/material";
 import Card from "../Card/Card";
 import {
+  animate,
   AnimatePresence,
   AnimateSharedLayout,
   motion,
+  useMotionValue,
   Variants,
 } from "framer-motion";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import { usePreview } from "../../contexts/PreviewProvider";
 import { Document } from "../../pages/Playground/Playground";
+import socket from "../../lib/socket";
 
 interface CardWrapperInterface {
   card: Document;
@@ -105,7 +108,16 @@ const PlaygroundPosts: React.FC = () => {
 const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
   const [dragging, setDragging] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
+
   const { setSelectedDocument } = usePreview();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  socket.on("receiveToken", () => {
+    animate(x, 0, { duration: 0.5 });
+    animate(y, 0, { duration: 0.5 });
+  });
 
   return (
     <Card
@@ -114,9 +126,15 @@ const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
       card={card}
       controls
       drag
+      x={x}
+      y={y}
       onDragStart={() => setDragging(true)}
       onDragEnd={() => setDragging(false)}
-      onPointerUp={() => !dragging && !saving && setSelectedDocument(card)}
+      onPointerDown={() => setIsClicking(true)}
+      onPointerUp={() => {
+        !dragging && !saving && isClicking && setSelectedDocument(card);
+        setIsClicking(false);
+      }}
       saving={saving}
       setSaving={setSaving}
       style={{ cursor: dragging ? "grabbing" : "pointer" }}

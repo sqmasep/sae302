@@ -1,6 +1,6 @@
 import { TurnedIn, TurnedInNot } from "@mui/icons-material";
 import { Box, Checkbox, Tooltip, Zoom } from "@mui/material";
-import { motion } from "framer-motion";
+import { motion, MotionValue, useMotionValue } from "framer-motion";
 import React, { useState } from "react";
 import { useSavedDocuments } from "../../contexts/SavedDocumentsProvider";
 import { Document } from "../../pages/Playground/Playground";
@@ -14,6 +14,8 @@ const Card: React.FC<
     controls?: boolean;
     imgSource?: string;
     saving?: boolean;
+    x?: MotionValue<number>;
+    y?: MotionValue<number>;
     setSaving?: (saving: boolean) => void;
   } & Omit<React.ComponentProps<typeof MotionBox>, "ref">
 > = ({
@@ -24,6 +26,8 @@ const Card: React.FC<
   imgSource = card.sourceLowRes,
   style,
   saving,
+  x,
+  y,
   setSaving = () => {},
   ...props
 }) => {
@@ -40,9 +44,10 @@ const Card: React.FC<
     <MotionBox
       whileHover={drag ? { scale: 1.05, rotateZ: 3 } : {}}
       whileTap={drag ? { scale: saving ? 1.05 : 0.95 } : {}}
-      drag={drag}
+      drag={!("ontouchstart" in window) && drag}
       dragMomentum={false}
       {...props}
+      style={{ x, y }}
       sx={{
         position: "relative",
         maxHeight: "100%",
