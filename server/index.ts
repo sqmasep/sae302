@@ -91,13 +91,21 @@ app.post(
 io.on("connection", async socket => {
   log.success(`Socket ${socket.id} connected`);
 
+  // NbUsers
+  const sendNbUsers = () => io.sockets.emit("nbUsers", io.sockets.sockets.size);
+  sendNbUsers();
+  socket.on("disconnect", () => {
+    log.success(`Socket ${socket.id} disconnected`);
+    sendNbUsers();
+  });
+
   socket.on("getPosts", async token => {
     let decoded: Token | undefined;
     let level: Token["level"] = 0;
     try {
       if (token && token !== "0") {
         decoded = (await jwtVerify(token)) as Token;
-        console.log("decoded,,,", decoded);
+        // console.log("decoded,,,", decoded);
         level = decoded.level;
       }
     } catch (error) {}
@@ -105,10 +113,10 @@ io.on("connection", async socket => {
       ? { _id: decoded?.idQuestion }
       : { level: 0 };
     const question = await Question.findOne(filter);
-    console.log("questions: ", question);
+    // console.log("questions: ", question);
 
     const posts = await Post.find({ idQuestions: question?._id });
-    console.log("posts::::", posts);
+    // console.log("posts::::", posts);
 
     socket.emit("receivePosts", { posts, question });
   });

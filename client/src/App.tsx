@@ -1,6 +1,7 @@
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import NbUsers from "./components/layout/NbUsers";
 import { LevelContextProvider } from "./contexts/LevelProvider";
 import PreviewProvider from "./contexts/PreviewProvider";
 import { Home, Playground } from "./pages";
@@ -64,6 +65,7 @@ const App: React.FC = () => {
             <Route path='/playground' element={<Playground />} />
             <Route path='/temporaire' element={<Temporaire />} />
           </Routes>
+          <NbUsers />
         </PreviewProvider>
       </LevelContextProvider>
     </ThemeProvider>
