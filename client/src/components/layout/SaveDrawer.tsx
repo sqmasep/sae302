@@ -16,7 +16,7 @@ interface CardWrapperInterface {
 }
 
 const StyledDrawer = styled(Drawer)(() => ({
-  "&	.MuiDrawer-paper": {
+  "& .MuiDrawer-paper": {
     overflowY: "auto",
     maxWidth: "20rem",
     paddingInline: "3rem",
@@ -32,7 +32,7 @@ const SaveDrawer: React.FC<SaveDrawerInterface> = ({ isOpen, toggle }) => {
       <Stack direction='column' gap={4}>
         {documents?.length ? (
           <AnimateSharedLayout>
-            <AnimatePresence mode='wait'>
+            <AnimatePresence>
               {documents.map(doc => (
                 <CardWrapper key={doc._id} card={doc} />
               ))}
@@ -50,26 +50,31 @@ const SaveDrawer: React.FC<SaveDrawerInterface> = ({ isOpen, toggle }) => {
 
 const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
   const [saving, setSaving] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
   const { setSelectedDocument } = usePreview();
 
   return (
     <Card
       controls
-      key={card._id}
       card={card}
       layoutId={card._id}
-      onPointerUp={() => !saving && setSelectedDocument(card)}
-      initial={{ transformOrigin: "bottom" }}
+      onPointerDown={() => setIsClicking(true)}
+      onPointerUp={() => {
+        !saving && isClicking && setSelectedDocument(card);
+        setSaving(false);
+        setIsClicking(false);
+      }}
       whileHover={{
         scale: 1.05,
         rotateZ: -5,
       }}
-      initial={{ y: 10 }}
-      animate={{ y: 0 }}
-      exit={{ y: -50 }}
+      whileTap={!saving ? { scale: 0.95 } : undefined}
+      // initial={{ x: 10, transformOrigin: "bottom" }}
+      // animate={{ x: 0, opacity: 1 }}
+      // exit={{ x: -50, opacity: 0 }}
+
       saving={saving}
       setSaving={setSaving}
-      whileTap={{ scale: !saving ? 0.95 : 1 }}
     />
   );
 };

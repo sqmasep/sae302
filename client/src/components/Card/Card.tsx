@@ -42,12 +42,12 @@ const Card: React.FC<
   return (
     // draggable box
     <MotionBox
-      whileHover={drag ? { scale: 1.05, rotateZ: 3 } : {}}
-      whileTap={drag ? { scale: saving ? 1.05 : 0.95 } : {}}
+      whileTap={drag ? { scale: saving ? 1.05 : 0.95 } : undefined}
+      whileHover={drag ? { scale: 1.05, rotateZ: 3 } : undefined}
       drag={!("ontouchstart" in window) && drag}
       dragMomentum={false}
-      {...props}
       style={{ x, y }}
+      {...props}
       sx={{
         position: "relative",
         maxHeight: "100%",
@@ -68,26 +68,26 @@ const Card: React.FC<
           style={{ maxWidth: "100%", maxHeight: "100vh", objectFit: "contain" }}
           src={`/imgs/playground/${imgSource}`}
         />
+        {/* save checkbox */}
+        {controls && (
+          <Tooltip
+            placement='top'
+            TransitionComponent={Zoom}
+            title={inArray(card) ? "Retirer" : "Sauvegarder"}
+          >
+            <MotionCheckbox
+              icon={<TurnedInNot />}
+              checked={inArray(card)}
+              onChange={handleChange}
+              onTapStart={() => setSaving(true)}
+              onTap={() => setSaving(false)}
+              value={card.sourceLowRes}
+              checkedIcon={<TurnedIn />}
+              sx={{ position: "absolute", bottom: 0, left: 0 }}
+            />
+          </Tooltip>
+        )}
       </motion.div>
-      {/* save checkbox */}
-      {controls && (
-        <Tooltip
-          placement='top'
-          TransitionComponent={Zoom}
-          title={inArray(card) ? "Retirer" : "Sauvegarder"}
-        >
-          <MotionCheckbox
-            icon={<TurnedInNot />}
-            checked={inArray(card)}
-            onChange={handleChange}
-            onTapStart={() => setSaving(true)}
-            onTap={() => setSaving(false)}
-            value={card.sourceLowRes}
-            checkedIcon={<TurnedIn />}
-            sx={{ position: "absolute", bottom: 0, left: 0 }}
-          />
-        </Tooltip>
-      )}
     </MotionBox>
   );
 };
