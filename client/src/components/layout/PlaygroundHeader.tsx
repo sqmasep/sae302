@@ -42,7 +42,7 @@ const PlaygroundHeader: React.FC = () => {
                 scale: 0.9,
               }}
               animate={{
-                opacity: [0, 1, 1],
+                opacity: [0, 0.75, 1],
                 y: 0,
                 scale: 1,
                 transition: { duration: 0.5 },

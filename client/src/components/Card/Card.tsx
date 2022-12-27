@@ -42,11 +42,11 @@ const Card: React.FC<
   return (
     // draggable box
     <MotionBox
-      whileTap={drag ? { scale: saving ? 1.05 : 0.95 } : undefined}
       whileHover={drag ? { scale: 1.05, rotateZ: 3 } : undefined}
+      whileTap={drag ? { scale: saving ? 1.05 : 0.95 } : undefined}
       drag={!("ontouchstart" in window) && drag}
       dragMomentum={false}
-      style={{ x, y }}
+      style={[x, y].includes(undefined) ? undefined : { x, y }}
       {...props}
       sx={{
         position: "relative",
