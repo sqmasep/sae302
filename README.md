@@ -25,6 +25,10 @@ Des choix technologiques ont dû être faits. Basé sur React côté frontend, E
 - Multer (temporaire)
 - JWT (pour anti-cheat solo)
 
+# Monorepo
+
+Un monorepo est plus adéquat pour ce type de projet, étant donné que le côté serveur n'a pas d'informations importantes, le github est public et je suis le seul développeur
+
 # Erreurs
 
 Je ne connaissais pas tRPC ni Prisma, j'avais utilisé alors socket.io et Mongoose. Le développement a été un peu plus difficile suite à ce problème (notamment pour le fullstack pas 100% typesafe), mais ça a été un challenge intéressant. De même pour le array storage, avec des contraintes dans des types non primitifs, où superjson aurait été plus pratique et adéquat. Le composant Card aurait pû être plus idéal en terme de DX avec des props mieux gérées, mais ça fonctionne.
