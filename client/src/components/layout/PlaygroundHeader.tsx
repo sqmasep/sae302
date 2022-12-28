@@ -9,6 +9,8 @@ interface AnswerInterface {
   answer: string;
 }
 
+const MotionTypography = motion(Typography);
+
 const PlaygroundHeader: React.FC = () => {
   const { token, randomQuestion } = useLevelContext();
 
@@ -26,11 +28,11 @@ const PlaygroundHeader: React.FC = () => {
       alignItems='center'
       justifyContent='space-between'
       flexWrap='wrap'
-      spacing={4}
+      gap={4}
     >
-      <Typography variant='h2' component='h1'>
+      <MotionTypography layoutId='movie-name' variant='h2' component='h1'>
         RESSOURCES
-      </Typography>
+      </MotionTypography>
       <Stack alignItems='center' gap={4}>
         <AnimatePresence mode='wait'>
           {randomQuestion && (

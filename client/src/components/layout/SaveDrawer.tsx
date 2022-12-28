@@ -33,7 +33,7 @@ const SaveDrawer: React.FC<SaveDrawerInterface> = ({ isOpen, toggle }) => {
   return (
     <StyledDrawer onClose={() => toggle(false)} anchor='right' open={isOpen}>
       <Stack direction='column' gap={4}>
-        <AnimatePresence mode='wait'>
+        <AnimatePresence>
           <AnimateSharedLayout>
             {documents?.length ? (
               documents.map(doc => (
@@ -95,11 +95,10 @@ const CardWrapper: React.FC<
         scale: 1.05,
         rotateZ: -5,
       }}
-      onHoverStart={() => console.log("hover!")}
       whileTap={!saving ? { scale: 0.95 } : undefined}
       initial={{ x: -50, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-      exit={{ scale: 0, opacity: 0 }}
+      // exit={{ scale: 0, opacity: 0 }}
     />
   );
 };

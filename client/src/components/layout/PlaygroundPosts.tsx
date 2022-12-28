@@ -8,6 +8,7 @@ import {
   motion,
   useMotionValue,
   Variants,
+  LayoutGroup,
 } from "framer-motion";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import { usePreview } from "../../contexts/PreviewProvider";
@@ -22,13 +23,20 @@ const MotionGrid = motion(Grid);
 
 const parentVariants: Variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, when: "beforeChildren" },
+  },
   exit: { opacity: 0 },
 };
 const childrenVariants: Variants = {
   hidden: { y: 50, opacity: 0 },
-  show: { y: 0, opacity: 1, transition: { duration: 0.3 } },
-  exit: { y: -50, opacity: 0 },
+  show: {
+    y: 0,
+    opacity: [0, 0, 1],
+    transition: { duration: 0.3, type: "spring", stiffness: 100 },
+  },
+  exit: { y: -50, opacity: 0, transition: { duration: 0.3 } },
 };
 
 const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
@@ -43,7 +51,7 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
       variants={parentVariants}
       initial='hidden'
       animate='show'
-      exit='exit'
+      // exit='exit'
       container
       gap={4}
       alignItems='center'
@@ -68,6 +76,9 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
           {selectedDocument && (
             // overlay
             <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               onTap={() => setSelectedDocument(null)}
               style={{
                 position: "fixed",
@@ -93,7 +104,7 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
                     maxWidth: "95%",
                     margin: "auto",
                   }}
-                  layoutId={selectedDocument._id}
+                  layoutId={`card-${selectedDocument._id}`}
                   card={selectedDocument}
                   imgSource={selectedDocument.sourceHighRes}
                 />
@@ -125,7 +136,7 @@ const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
   return (
     <Card
       key={`card-${card._id}`}
-      layoutId={card._id}
+      layoutId={`card-${card._id}`}
       card={card}
       controls
       drag

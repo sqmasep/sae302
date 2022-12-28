@@ -194,6 +194,24 @@ io.on("connection", async socket => {
     }
   });
 
+  socket.on("message", ({ content }) => {
+    const schema = z.object({
+      content: z.string(),
+    });
+
+    try {
+      const parsedContent = schema.parse({ content });
+
+      io.emit("message", {
+        content: parsedContent,
+        sender: socket.id,
+        date: new Date(),
+      });
+    } catch (err) {
+      socket.emit("error", "Une erreur interne est survenue.");
+    }
+  });
+
   // NOTE: DEV (temporaire)
   socket.on("sendQuestion", async ({ questions, level }) => {
     log.info(`Questions: ${questions}`);

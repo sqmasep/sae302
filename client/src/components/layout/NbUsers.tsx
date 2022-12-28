@@ -12,20 +12,20 @@ const NbUsers: React.FC = () => {
     <Stack
       direction='row'
       alignItems='center'
-      spacing={1}
+      gap={1}
       sx={{
         position: "fixed",
         bottom: 0,
         left: 0,
         m: 4,
-        zIndex: 1050,
+        zIndex: 1048,
       }}
     >
       <Box
         sx={{
           borderRadius: 50,
           backgroundColor: "red",
-          width: ".8rem",
+          width: ".8em",
           aspectRatio: "1",
         }}
       />

@@ -87,7 +87,7 @@ const Card: React.FC<
         {/* save checkbox */}
         {controls && (
           <Tooltip
-            placement='top'
+            placement='left'
             TransitionComponent={Zoom}
             title={inArray(card) ? "Retirer" : "Sauvegarder"}
           >

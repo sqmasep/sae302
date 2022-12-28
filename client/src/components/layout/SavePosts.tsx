@@ -8,18 +8,18 @@ const SavePosts: React.FC = () => {
   const [isOpen, toggle] = useToggle(false);
 
   return (
-    <Box>
+    <>
       <SaveDrawer toggle={toggle} isOpen={isOpen} />
-      <Box>
+      <Box sx={{ position: "relative", zIndex: 1050 }}>
         <Fab
+          sx={{ position: "fixed", bottom: 0, right: 0, m: 4, zIndex: 1050 }}
           color='primary'
-          sx={{ position: "fixed", bottom: 0, right: 0, m: 4 }}
           onClick={() => toggle()}
         >
           <Save />
         </Fab>
       </Box>
-    </Box>
+    </>
   );
 };
 

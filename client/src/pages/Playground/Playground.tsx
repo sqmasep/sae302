@@ -16,23 +16,12 @@ export interface Document {
 const Playground: React.FC = () => {
   return (
     <>
-      <Box
-        sx={{
-          position: "fixed",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(to bottom, transparent 0%, #0009 100%)",
-          zIndex: 100,
-          pointerEvents: "none",
-          touchAction: "none",
-        }}
-      />
       <Snackbar />
-      <Container>
+      <Container sx={{ minHeight: "100vh" }}>
         <PlaygroundHeader />
         <SavedDocumentsProvider>
-          <SavePosts />
           <PlaygroundPosts />
+          <SavePosts />
         </SavedDocumentsProvider>
       </Container>
     </>
