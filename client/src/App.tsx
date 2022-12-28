@@ -2,10 +2,12 @@ import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 import React from "react";
 import { useLocation, useRoutes } from "react-router-dom";
+import Chatbox from "./components/Chatbox/Chatbox";
 import NbUsers from "./components/layout/NbUsers";
 import { LevelContextProvider } from "./contexts/LevelProvider";
 import PreviewProvider from "./contexts/PreviewProvider";
 import { Home, Playground } from "./pages";
+import Film from "./pages/Film/Film";
 import Temporaire from "./pages/temporaire/Temporaire";
 import theme from "./theme";
 
@@ -70,6 +72,27 @@ const App: React.FC = () => {
         </>
       ),
     },
+    {
+      path: "/film",
+      element: (
+        <>
+          <AnimatedPage>
+            <Film />
+          </AnimatedPage>
+          <MotionBox
+            sx={{
+              position: "fixed",
+              inset: 0,
+              zIndex: -1,
+              backgroundImage: "radial-gradient(ellipse, #fff1, #000)",
+            }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+          />
+        </>
+      ),
+    },
     { path: "/temporaire", element: <Temporaire /> },
   ]);
 
@@ -90,6 +113,7 @@ const App: React.FC = () => {
         {/* </AnimateSharedLayout> */}
       </LevelContextProvider>
       <NbUsers />
+      <Chatbox />
     </ThemeProvider>
   );
 };

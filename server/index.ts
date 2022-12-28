@@ -200,12 +200,13 @@ io.on("connection", async socket => {
     });
 
     try {
-      const parsedContent = schema.parse({ content });
+      const { content: parsedContent } = schema.parse({ content });
+      const trimmedParsedContent = parsedContent.trim();
 
-      io.emit("message", {
-        content: parsedContent,
+      io.emit("messages", {
+        content: trimmedParsedContent,
         sender: socket.id,
-        date: new Date(),
+        date: Date.now(),
       });
     } catch (err) {
       socket.emit("error", "Une erreur interne est survenue.");

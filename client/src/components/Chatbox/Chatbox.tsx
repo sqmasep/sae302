@@ -1,6 +1,8 @@
-import { Box, Input } from "@mui/material";
+import { Box, Input, Stack, Typography } from "@mui/material";
+import { formatDistance } from "date-fns";
 import { Field, Form, Formik, FormikHelpers, FormikValues } from "formik";
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import socket from "../../lib/socket";
 
 interface MessageInterface {
@@ -11,18 +13,20 @@ interface MessageInterface {
 
 type MessageContent = Pick<MessageInterface, "content">;
 
-const Chat: React.FC = () => {
+const Chatbox: React.FC = () => {
   const [messages, setMessages] = useState<MessageInterface[]>([]);
+  const { pathname } = useLocation();
 
   socket.on("messages", (message: MessageInterface) => {
+    console.log("received");
+    console.log(message);
     setMessages(prev => [...prev, message]);
   });
-
   const sendMessage = (
-    values: MessageContent,
+    { content }: MessageContent,
     { resetForm }: FormikHelpers<MessageContent>
   ) => {
-    socket.emit("message", values.content);
+    socket.emit("message", { content });
     resetForm();
   };
 
@@ -31,7 +35,13 @@ const Chat: React.FC = () => {
       <Formik initialValues={{ content: "" }} onSubmit={sendMessage}>
         <Form>
           {messages.map(({ content, date, sender }) => (
-            <pre>{JSON.stringify(content, null, 2)}</pre>
+            <Stack key={`${Math.random()}${sender}`} direction='column'>
+              <Stack>
+                <Typography>{sender}</Typography>
+                <Typography>{content}</Typography>
+                <Typography>{formatDistance(Date.now(), date)}</Typography>
+              </Stack>
+            </Stack>
           ))}
           <Field as={Input} name='content' />
         </Form>
@@ -39,3 +49,5 @@ const Chat: React.FC = () => {
     </Box>
   );
 };
+
+export default Chatbox;

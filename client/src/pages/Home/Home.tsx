@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const MotionTypography = motion(Typography);
+const MotionButton = motion(Button);
 
 const Home: React.FC = () => {
   return (
@@ -25,14 +26,17 @@ const Home: React.FC = () => {
             </MotionTypography>
 
             <Stack gap={1} alignSelf='center'>
-              <Button
+              <MotionButton
+                layoutId='video'
                 onClick={() => {}}
                 endIcon={<PlayArrow />}
                 variant='contained'
                 size='large'
+                component={Link}
+                to='/film'
               >
                 Voir le film
-              </Button>
+              </MotionButton>
               <Button component={Link} to='/playground' endIcon={<Search />}>
                 Commencer les recherches
               </Button>
