@@ -86,22 +86,22 @@ const Card: React.FC<
         />
         {/* save checkbox */}
         {controls && (
-          <Tooltip
-            placement='left'
-            TransitionComponent={Zoom}
-            title={inArray(card) ? "Retirer" : "Sauvegarder"}
-          >
-            <MotionCheckbox
-              icon={<TurnedInNot />}
-              checked={inArray(card)}
-              onChange={handleChange}
-              onTapStart={() => setSaving(true)}
-              onTap={() => setSaving(false)}
-              value={card.sourceLowRes}
-              checkedIcon={<TurnedIn />}
-              sx={{ position: "absolute", bottom: 0, left: 0 }}
-            />
-          </Tooltip>
+          // <Tooltip
+          //   placement='left'
+          //   TransitionComponent={Zoom}
+          //   title={inArray(card) ? "Retirer" : "Sauvegarder"}
+          // >
+          <MotionCheckbox
+            icon={<TurnedInNot />}
+            checked={inArray(card)}
+            onChange={handleChange}
+            onTapStart={() => setSaving(true)}
+            onTap={() => setSaving(false)}
+            value={card.sourceLowRes}
+            checkedIcon={<TurnedIn />}
+            sx={{ position: "absolute", bottom: 0, left: 0 }}
+          />
+          // </Tooltip>
         )}
       </motion.div>
     </MotionBox>

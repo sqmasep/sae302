@@ -1,7 +1,7 @@
 import { Box, Input, Stack, Typography } from "@mui/material";
 import { formatDistance } from "date-fns";
 import { Field, Form, Formik, FormikHelpers, FormikValues } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import socket from "../../lib/socket";
 
@@ -17,16 +17,22 @@ const Chatbox: React.FC = () => {
   const [messages, setMessages] = useState<MessageInterface[]>([]);
   const { pathname } = useLocation();
 
-  socket.on("messages", (message: MessageInterface) => {
-    console.log("received");
-    console.log(message);
-    setMessages(prev => [...prev, message]);
-  });
+  useEffect(() => {
+    socket.on(
+      "messages",
+      (message: MessageInterface & { pathname: string }) => {
+        message.pathname === pathname &&
+          setMessages(prev => [...prev, message]);
+      }
+    );
+  }, []);
+
   const sendMessage = (
     { content }: MessageContent,
     { resetForm }: FormikHelpers<MessageContent>
   ) => {
-    socket.emit("message", { content });
+    socket.emit("message", { content, pathname });
+    setMessages(prev => [...prev, { content, date: new Date(), sender: "me" }]);
     resetForm();
   };
 

@@ -194,19 +194,25 @@ io.on("connection", async socket => {
     }
   });
 
-  socket.on("message", ({ content }) => {
+  socket.on("message", ({ content, pathname }) => {
     const schema = z.object({
       content: z.string(),
+      pathname: z.string(),
     });
 
     try {
-      const { content: parsedContent } = schema.parse({ content });
+      const { content: parsedContent, pathname: parsedPathname } = schema.parse(
+        { content, pathname }
+      );
+      console.log(parsedPathname);
+
       const trimmedParsedContent = parsedContent.trim();
 
-      io.emit("messages", {
+      socket.broadcast.emit("messages", {
         content: trimmedParsedContent,
         sender: socket.id,
         date: Date.now(),
+        pathname: parsedPathname,
       });
     } catch (err) {
       socket.emit("error", "Une erreur interne est survenue.");

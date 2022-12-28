@@ -74,11 +74,7 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
         <AnimatePresence>
           {/* selected document */}
           {selectedDocument && (
-            // overlay
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
               onTap={() => setSelectedDocument(null)}
               style={{
                 position: "fixed",
@@ -89,6 +85,11 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
                 background: "rgba(0,0,0,0.5)",
               }}
             >
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              />
               <Box
                 sx={{
                   position: "absolute",

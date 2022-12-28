@@ -1,11 +1,17 @@
 import { Grid } from "@mui/material";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useEffect } from "react";
 import Player from "react-player";
 
 const MotionGrid = motion(Grid);
 
 const Film: React.FC = () => {
+  useEffect(() => {
+    if ("ontouchstart" in window) {
+      screen.orientation.lock("landscape");
+    }
+  }, []);
+
   return (
     <Grid
       container
