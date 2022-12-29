@@ -18,6 +18,7 @@ const log = {
     console.info(chalk.blue.bold.bgBlueBright("[?]"), chalk.blue(msg)),
 
   danger: (msg: any): string => chalk.red(msg),
+  good: (msg: any): string => chalk.greenBright(msg),
 };
 
 export default log;

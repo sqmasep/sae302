@@ -16,19 +16,26 @@ const fromCache = <T>(key: string, cb: (...args: any[]) => T) => {
 
     if (cachedValue !== null) {
       const timeEnd = Date.now();
-      log.info(`Cache hit for key ${key} in ${timeEnd - timeStart}ms`);
+      log.info(
+        `Cache ${log.good("hit")} for key ${key} in ${timeEnd - timeStart}ms`
+      );
       return resolve(JSON.parse(cachedValue));
     }
 
-    log.info(`Cache miss for key ${key}`);
+    log.info(`Cache ${log.danger("miss")} for key ${key}`);
     const valueToCache = await cb();
+    const timeEnd = Date.now();
     await redisClient.setEx(
       `${PREFIX}${key}`,
       DEFAULT_TTL,
       JSON.stringify(valueToCache)
     );
-    log.info(`New cache set for key ${key}`);
-    return valueToCache;
+    log.info(
+      `New cache set for key ${key} - Took ${
+        timeEnd - timeStart
+      }ms to fetch from db`
+    );
+    return resolve(valueToCache);
   });
 };
 
