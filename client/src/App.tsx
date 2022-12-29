@@ -10,6 +10,7 @@ import { Home, Playground } from "./pages";
 import Film from "./pages/Film/Film";
 import Temporaire from "./pages/temporaire/Temporaire";
 import theme from "./theme";
+import Confetti from "react-confetti";
 
 const MotionBox = motion(Box);
 

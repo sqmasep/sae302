@@ -14,6 +14,7 @@ import { useLevelContext } from "../../contexts/LevelProvider";
 import { usePreview } from "../../contexts/PreviewProvider";
 import { Document } from "../../pages/Playground/Playground";
 import socket from "../../lib/socket";
+import Loading from "../Loading/Loading";
 
 interface CardWrapperInterface {
   card: Document;
@@ -42,7 +43,7 @@ const childrenVariants: Variants = {
 const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
   ...props
 }) => {
-  const { posts } = useLevelContext();
+  const { posts, isLoading } = useLevelContext();
   const { selectedDocument, setSelectedDocument } = usePreview();
 
   return posts.length ? (
@@ -70,7 +71,6 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
             <CardWrapper card={card} />
           </MotionGrid>
         ))}
-
         <AnimatePresence>
           {/* selected document */}
           {selectedDocument && (
@@ -115,6 +115,8 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
         </AnimatePresence>
       </AnimateSharedLayout>
     </MotionGrid>
+  ) : isLoading ? (
+    <Loading />
   ) : (
     <>Pas de documents</>
   );

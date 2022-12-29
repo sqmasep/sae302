@@ -34,8 +34,13 @@ io.on("connection", async socket => {
       if (token && token !== "0") {
         decoded = (await jwtVerify(token)) as Token;
         level = decoded.level;
+
+        if (decoded.win === true) {
+          return socket.emit("win");
+        }
       }
     } catch (error) {}
+
     const filter = decoded?.idQuestion
       ? { _id: decoded?.idQuestion }
       : { level: 0 };
@@ -92,18 +97,25 @@ io.on("connection", async socket => {
       console.log("currentQuestion :", currentQuestion);
       console.log("currentAnswers: ", currentAnswers);
 
+      // find answer in variants
       const matchedAnswer = currentAnswers.find(a =>
         a.variants
           .map(a => a.toLowerCase())
           .includes(parsedAnswer.trim().toLowerCase())
       );
 
+      // answer is not in variants
       if (!matchedAnswer) {
         log.info(`Answer: ${log.danger("not in variants")}`);
         return socket.emit("error", "Mauvaise réponse");
       }
 
-      if (matchedAnswer.last) return socket.emit("win");
+      // it's a win!
+      if (matchedAnswer.last) {
+        log.info(`Answer: ${log.good("last")}`);
+        const newToken = jwt.sign({ win: true }, process.env.JWT_SECRET_KEY);
+        return socket.emit("win", newToken);
+      }
 
       const nextQuestion = await fromCache(
         `question-${matchedAnswer.nextIdQuestion}`,
@@ -119,6 +131,7 @@ io.on("connection", async socket => {
         { level: nextQuestion?.level || "0", idQuestion: nextQuestion?._id },
         process.env.JWT_SECRET_KEY
       );
+      console.log(newToken);
 
       socket.emit("receiveToken", {
         token: newToken,

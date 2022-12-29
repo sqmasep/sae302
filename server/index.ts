@@ -2,17 +2,9 @@ import express from "express";
 import log from "./utils/log";
 import cors from "cors";
 import dotenv from "dotenv";
-import { Server } from "socket.io";
 import http from "http";
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-import { z } from "zod";
-import { jwtVerify } from "./utils/jwt";
-import getPostsByToken from "./utils/getPostsByToken";
 import multer from "multer";
-import Question from "./schemas/Question";
 import Post from "./schemas/Post";
-import Answer from "./schemas/Answer";
 
 // TODO: remove before prod
 const storage = multer.diskStorage({
@@ -35,6 +27,7 @@ declare global {
 export interface Token {
   level: number;
   idQuestion: string;
+  win?: boolean;
 }
 
 // Services
