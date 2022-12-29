@@ -38,3 +38,7 @@ Je ne connaissais pas tRPC ni Prisma, j'avais utilisé alors socket.io et Mongoo
 - Arbre de possibilité
 - Créer des custom hooks est en réalité facile et même trop swag
 - Organisation avec les Contexts
+
+# TODO
+
+[ ] - refactoriser socket.io.ts

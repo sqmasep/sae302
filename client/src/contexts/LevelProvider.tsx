@@ -78,10 +78,10 @@ export const LevelContextProvider: React.FC<LevelContextProps> = ({
       setQuestion(question);
     });
 
-    socket.on("win", token => {
+    socket.on("win", infos => {
       setWin(true);
       setIsLoading(false);
-      token && setToken(token);
+      infos?.token && setToken(infos.token);
     });
   }, []);
 

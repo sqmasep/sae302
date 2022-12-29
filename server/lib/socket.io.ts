@@ -9,6 +9,7 @@ import { z } from "zod";
 import Answer from "../schemas/Answer";
 import jwt from "jsonwebtoken";
 import fromCache from "../utils/fromCache";
+import Winner from "../schemas/Winner";
 
 const io = new Server(server, {
   cors: {
@@ -25,6 +26,99 @@ io.on("connection", async socket => {
   socket.on("disconnect", () => {
     log.success(`Socket ${socket.id} disconnected`);
     sendNbUsers();
+  });
+
+  socket.on("sendNickname", async ({ token, nickname }) => {
+    const tokenSchema = z.string();
+    const nicknameSchema = z.string();
+
+    let decoded: Token | undefined;
+    let level: Token["level"] = 0;
+
+    try {
+      const parsedToken = tokenSchema.parse(token);
+      decoded = (await jwtVerify(parsedToken)) as Token;
+      level = decoded.level;
+      console.log("sendnickname decoded:", decoded);
+
+      if (decoded?.win !== true) return;
+      if (decoded?.inLeaderboard === true) {
+        socket.emit("alreadyInLeaderboard", "");
+        return socket.emit(
+          "error",
+          "Vous avez déjà été ajouté au leaderboard."
+        );
+      }
+
+      const parsedNickname = nickname && nicknameSchema.parse(nickname);
+
+      // win
+      const winners = await fromCache(
+        "winners",
+        async () => await Winner.find()
+      );
+
+      const winner = await Winner.updateOne(
+        {
+          socketId: socket.id,
+        },
+        {
+          $set: {
+            nickname: parsedNickname,
+          },
+        }
+      );
+      log.success("Nickname updated");
+
+      const newToken = jwt.sign(
+        { win: true, inLeaderboard: true },
+        process.env.JWT_SECRET_KEY
+      );
+      console.log("newToken nickname:", newToken);
+      socket.emit("win", { token: newToken });
+    } catch (error) {
+      log.error(error);
+      socket.emit("error", "Une erreur interne est survenue.");
+    }
+  });
+
+  socket.on("win", async ({ token }) => {
+    const tokenSchema = z.string();
+
+    let decoded: Token | undefined;
+    let level: Token["level"] = 0;
+
+    try {
+      const parsedToken = tokenSchema.parse(token);
+      decoded = (await jwtVerify(parsedToken)) as Token;
+      level = decoded.level;
+      console.log(decoded);
+      if (decoded?.win !== true) return;
+      if (decoded?.inLeaderboard === true) {
+        socket.emit("alreadyInLeaderboard");
+        return socket.emit(
+          "error",
+          "Vous avez déjà été ajouté au leaderboard."
+        );
+      }
+
+      const winners = await fromCache(
+        "winners",
+        async () => await Winner.find()
+      );
+
+      if (winners.length === 0) {
+        socket.emit("firstWinner", { isFirstWinner: !winners.length });
+        const winner = await Winner.create({
+          socketId: socket.id,
+          date: new Date(Date.now()),
+        });
+        log.success("Winner created");
+      }
+    } catch (error) {
+      log.error(error);
+      socket.emit("error", "Une erreur interne est survenue.");
+    }
   });
 
   socket.on("getPosts", async token => {
@@ -114,7 +208,7 @@ io.on("connection", async socket => {
       if (matchedAnswer.last) {
         log.info(`Answer: ${log.good("last")}`);
         const newToken = jwt.sign({ win: true }, process.env.JWT_SECRET_KEY);
-        return socket.emit("win", newToken);
+        return socket.emit("win", { token: newToken });
       }
 
       const nextQuestion = await fromCache(

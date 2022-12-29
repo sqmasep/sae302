@@ -28,6 +28,7 @@ export interface Token {
   level: number;
   idQuestion: string;
   win?: boolean;
+  inLeaderboard?: boolean;
 }
 
 // Services
