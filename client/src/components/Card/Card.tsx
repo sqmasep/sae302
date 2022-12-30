@@ -14,6 +14,7 @@ const Card: React.FC<
     controls?: boolean;
     imgSource?: string;
     saving?: boolean;
+    isDragging?: boolean;
     x?: MotionValue<number>;
     y?: MotionValue<number>;
     setSaving?: (saving: boolean) => void;
@@ -26,6 +27,7 @@ const Card: React.FC<
   imgSource = card.sourceLowRes,
   style,
   saving,
+  isDragging,
   x,
   y,
   setSaving = () => {},
@@ -46,7 +48,10 @@ const Card: React.FC<
       whileTap={drag ? { scale: saving ? 1.05 : 0.95 } : undefined}
       drag={!("ontouchstart" in window) && drag}
       dragMomentum={false}
-      style={[x, y].includes(undefined) ? undefined : { x, y }}
+      style={{
+        // zIndex: isDragging ? 1 : 0,
+        ...(x && y ? { x, y } : undefined),
+      }}
       {...props}
       sx={{
         position: "relative",
@@ -60,12 +65,18 @@ const Card: React.FC<
           sx={{
             position: "absolute",
             inset: 0,
-            // backgroundImage: "linear-gradient(to bottom, transparent, #0005)",
+            backgroundImage:
+              "radial-gradient(circle at 0 100%, #0001, transparent)",
           }}
         />
         <motion.img
           draggable='false'
-          style={{ maxWidth: "100%", maxHeight: "100vh", objectFit: "contain" }}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "100vh",
+            objectFit: "contain",
+            borderRadius: ".15em",
+          }}
           src={`/imgs/playground/${imgSource}`}
         />
         {/* blur box */}
@@ -74,23 +85,20 @@ const Card: React.FC<
             position: "absolute",
             width: "75%",
             left: "50%",
-            bottom: ".5rem",
+            bottom: "-.5rem",
             transform: "translateX(-50%)",
             height: "2rem",
             borderRadius: "50%",
             backgroundImage: `url(/imgs/playground/${imgSource})`,
             filter: "blur(2rem)",
             backgroundSize: "cover",
+            backgroundPosition: "bottom",
             opacity: 0.5,
+            zIndex: -1,
           }}
         />
         {/* save checkbox */}
         {controls && (
-          // <Tooltip
-          //   placement='left'
-          //   TransitionComponent={Zoom}
-          //   title={inArray(card) ? "Retirer" : "Sauvegarder"}
-          // >
           <MotionCheckbox
             icon={<TurnedInNot />}
             checked={inArray(card)}
@@ -99,9 +107,13 @@ const Card: React.FC<
             onTap={() => setSaving(false)}
             value={card.sourceLowRes}
             checkedIcon={<TurnedIn />}
-            sx={{ position: "absolute", bottom: 0, left: 0 }}
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+            }}
+            color='primary'
           />
-          // </Tooltip>
         )}
       </motion.div>
     </MotionBox>

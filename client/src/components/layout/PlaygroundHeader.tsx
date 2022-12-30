@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import socket from "../../lib/socket";
+import Sfx from "../Sfx/Sfx";
 
 interface AnswerInterface {
   answer: string;
@@ -29,10 +30,19 @@ const PlaygroundHeader: React.FC = () => {
       justifyContent='space-between'
       flexWrap='wrap'
       gap={4}
+      sx={{ py: 2 }}
     >
-      <MotionTypography layoutId='movie-name' variant='h2' component='h1'>
+      <MotionTypography
+        layoutId='movie-name'
+        variant='h3'
+        fontWeight={900}
+        component='h1'
+      >
         RESSOURCES
       </MotionTypography>
+
+      <Sfx />
+
       <Stack alignItems='center' gap={4}>
         <AnimatePresence mode='wait'>
           {randomQuestion && (

@@ -18,6 +18,7 @@ specifiers:
   babel-loader: ^8.2.5
   css-loader: ^6.7.1
   date-fns: ^2.29.3
+  file-loader: ^6.2.0
   formik: ^2.2.9
   framer-motion: 7.6.1
   react: ^18.2.0
@@ -69,6 +70,7 @@ devDependencies:
   arbalet: 1.0.3
   babel-loader: 8.2.5_wfdvla2jorjoj23kkavho2upde
   css-loader: 6.7.1_webpack@5.74.0
+  file-loader: 6.2.0_webpack@5.74.0
   style-loader: 3.3.1_webpack@5.74.0
   stylus: 0.59.0
   stylus-loader: 7.1.0_rgwcw63jhyplbyg2jpw7ajyoqm
@@ -2856,6 +2858,17 @@ packages:
     engines: {node: '>=0.8.0'}
     dependencies:
       websocket-driver: 0.7.4
+    dev: true
+
+  /file-loader/6.2.0_webpack@5.74.0:
+    resolution: {integrity: sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      webpack: ^4.0.0 || ^5.0.0
+    dependencies:
+      loader-utils: 2.0.2
+      schema-utils: 3.1.1
+      webpack: 5.74.0_webpack-cli@4.10.0
     dev: true
 
   /fill-range/7.0.1:

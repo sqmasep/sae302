@@ -9,12 +9,14 @@ import {
   useMotionValue,
   Variants,
   LayoutGroup,
+  useTransform,
 } from "framer-motion";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import { usePreview } from "../../contexts/PreviewProvider";
 import { Document } from "../../pages/Playground/Playground";
 import socket from "../../lib/socket";
 import Loading from "../Loading/Loading";
+import { useSettings } from "../../contexts/SettingsProvider";
 
 interface CardWrapperInterface {
   card: Document;
@@ -54,7 +56,7 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
       animate='show'
       // exit='exit'
       container
-      gap={4}
+      spacing={4}
       alignItems='center'
     >
       {/* list of documents */}
@@ -66,11 +68,15 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
             item
             xs={12}
             sm={8}
-            lg={2}
+            lg={3}
           >
-            <CardWrapper card={card} />
+            <CardWrapper
+              card={card}
+              sx={{ transform: `rotateZ(${Math.floor(Math.random() * 100)}` }}
+            />
           </MotionGrid>
         ))}
+
         <AnimatePresence>
           {/* selected document */}
           {selectedDocument && (
@@ -80,6 +86,7 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
                 position: "fixed",
                 top: 0,
                 left: 0,
+                zIndex: 1000,
                 width: "100%",
                 height: "100%",
                 background: "rgba(0,0,0,0.5)",
@@ -122,11 +129,14 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
   );
 };
 
-const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
+const CardWrapper: React.FC<
+  CardWrapperInterface & React.ComponentProps<typeof Card>
+> = ({ card, ...props }) => {
   const [dragging, setDragging] = useState(false);
   const [saving, setSaving] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
 
+  const { playRandomSfx } = useSettings();
   const { setSelectedDocument } = usePreview();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -138,6 +148,7 @@ const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
 
   return (
     <Card
+      {...props}
       key={`card-${card._id}`}
       layoutId={`card-${card._id}`}
       card={card}
@@ -149,12 +160,19 @@ const CardWrapper: React.FC<CardWrapperInterface> = ({ card }) => {
       onDragEnd={() => setDragging(false)}
       onPointerDown={() => setIsClicking(true)}
       onPointerUp={() => {
-        !dragging && !saving && isClicking && setSelectedDocument(card);
+        if (!dragging && !saving && isClicking) {
+          setSelectedDocument(card);
+          playRandomSfx();
+        }
         setIsClicking(false);
       }}
       saving={saving}
       setSaving={setSaving}
-      style={{ cursor: dragging ? "grabbing" : "pointer" }}
+      isDragging={dragging}
+      style={{
+        cursor: dragging ? "grabbing" : "grab",
+        zIndex: dragging ? 1000 : 0,
+      }}
     />
   );
 };

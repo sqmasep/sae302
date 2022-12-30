@@ -9,10 +9,8 @@ import Post from "./schemas/Post";
 // TODO: remove before prod
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "../client/public/imgs/playground/"),
-  filename: (req, file, cb) => {
-    console.log(file);
-    return cb(null, `${crypto.randomUUID()}.${file.mimetype.split("/")[1]}`);
-  },
+  filename: (req, file, cb) =>
+    cb(null, `${crypto.randomUUID()}.${file.mimetype.split("/")[1]}`),
 });
 const upload = multer({ storage });
 

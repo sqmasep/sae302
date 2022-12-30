@@ -26,7 +26,7 @@ const Playground: React.FC = () => {
         <SavedDocumentsProvider>
           {!win ? (
             <>
-              <PlaygroundPosts />
+              <PlaygroundPosts sx={{ py: 4 }} />
               <SavePosts />
             </>
           ) : (

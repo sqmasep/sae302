@@ -3,6 +3,7 @@ import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
 import React, { useState } from "react";
 import { usePreview } from "../../contexts/PreviewProvider";
 import { useSavedDocuments } from "../../contexts/SavedDocumentsProvider";
+import { useSettings } from "../../contexts/SettingsProvider";
 import { Document } from "../../pages/Playground/Playground";
 import Card from "../Card/Card";
 
@@ -73,6 +74,7 @@ const CardWrapper: React.FC<
   const [saving, setSaving] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
   const { setSelectedDocument } = usePreview();
+  const { playRandomSfx } = useSettings();
 
   return (
     <Card
@@ -84,7 +86,10 @@ const CardWrapper: React.FC<
       layoutId={card._id}
       onPointerDown={() => setIsClicking(true)}
       onPointerUp={() => {
-        !saving && isClicking && setSelectedDocument(card);
+        if (!saving && isClicking) {
+          playRandomSfx();
+          !saving && isClicking && setSelectedDocument(card);
+        }
         setSaving(false);
         setIsClicking(false);
       }}

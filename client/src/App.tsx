@@ -11,6 +11,7 @@ import Film from "./pages/Film/Film";
 import Temporaire from "./pages/temporaire/Temporaire";
 import theme from "./theme";
 import Confetti from "react-confetti";
+import SettingsProvider from "./contexts/SettingsProvider";
 
 const MotionBox = motion(Box);
 
@@ -63,9 +64,8 @@ const App: React.FC = () => {
               right: 0,
               minWidth: "100vw",
               minHeight: "100vh",
-              backgroundImage:
-                "linear-gradient(to bottom, transparent 0%, #0009 100%)",
-              zIndex: 1,
+              backgroundImage: "linear-gradient(to bottom, transparent, #0009)",
+              zIndex: 1048,
               pointerEvents: "none",
               touchAction: "none",
             }}
@@ -103,18 +103,20 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <LevelContextProvider>
-        {/* <AnimateSharedLayout> */}
-        <PreviewProvider>
-          <AnimatePresence mode='wait'>
-            {React.cloneElement(element, { key: location.pathname })}
-          </AnimatePresence>
-        </PreviewProvider>
-        {/* </AnimateSharedLayout> */}
-      </LevelContextProvider>
-      <NbUsers />
-      <Chatbox />
+      <SettingsProvider>
+        <CssBaseline />
+        <LevelContextProvider>
+          {/* <AnimateSharedLayout> */}
+          <PreviewProvider>
+            <AnimatePresence mode='wait'>
+              {React.cloneElement(element, { key: location.pathname })}
+            </AnimatePresence>
+          </PreviewProvider>
+          {/* </AnimateSharedLayout> */}
+        </LevelContextProvider>
+        <NbUsers />
+        <Chatbox />
+      </SettingsProvider>
     </ThemeProvider>
   );
 };
