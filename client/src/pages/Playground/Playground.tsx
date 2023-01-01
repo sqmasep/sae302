@@ -8,6 +8,7 @@ import Snackbar from "../../components/Snackbar/Snackbar";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import Confetti from "react-confetti";
 import WinScreen from "../../components/layout/WinScreen";
+import { Helmet } from "react-helmet-async";
 
 export interface Document {
   _id: string;
@@ -20,6 +21,10 @@ const Playground: React.FC = () => {
   const { win } = useLevelContext();
   return (
     <>
+      <Helmet>
+        <title>Interférences - Playground</title>
+      </Helmet>
+
       <Snackbar />
       <Container sx={{ minHeight: "100vh" }}>
         <PlaygroundHeader />

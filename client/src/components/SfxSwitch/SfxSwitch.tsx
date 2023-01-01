@@ -3,7 +3,7 @@ import { FormControlLabel, Stack, Switch } from "@mui/material";
 import React from "react";
 import { useSettings } from "../../contexts/SettingsProvider";
 
-const Sfx: React.FC = () => {
+const SfxSwitch: React.FC = () => {
   const { settings, toggleSfx } = useSettings();
 
   return (
@@ -22,4 +22,4 @@ const Sfx: React.FC = () => {
   );
 };
 
-export default Sfx;
+export default SfxSwitch;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import socket from "../../lib/socket";
+import { Helmet } from "react-helmet-async";
 
 const Leaderboard: React.FC = () => {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -7,7 +8,14 @@ const Leaderboard: React.FC = () => {
     socket.on("leaderboard", (data: any) => {});
   });
 
-  return <>leaderboard</>;
+  return (
+    <>
+      <Helmet>
+        <title>Interférences - Leaderboard</title>
+      </Helmet>
+      leaderboard
+    </>
+  );
 };
 
 export default Leaderboard;

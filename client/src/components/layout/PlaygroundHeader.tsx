@@ -1,16 +1,21 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Button, Stack, styled, TextField, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
+import { Link } from "react-router-dom";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import socket from "../../lib/socket";
-import Sfx from "../Sfx/Sfx";
+import MovieName from "../MovieName/MovieName";
+import SfxSwitch from "../SfxSwitch/SfxSwitch";
 
 interface AnswerInterface {
   answer: string;
 }
 
-const MotionTypography = motion(Typography);
+const StyledLink = styled(Link)(() => ({
+  textDecoration: "none",
+  color: "inherit",
+}));
 
 const PlaygroundHeader: React.FC = () => {
   const { token, randomQuestion } = useLevelContext();
@@ -32,18 +37,13 @@ const PlaygroundHeader: React.FC = () => {
       gap={4}
       sx={{ py: 2 }}
     >
-      <MotionTypography
-        layoutId='movie-name'
-        variant='h3'
-        fontWeight={900}
-        component='h1'
-      >
-        RESSOURCES
-      </MotionTypography>
+      <StyledLink to='/'>
+        <MovieName />
+      </StyledLink>
 
-      <Sfx />
+      <SfxSwitch />
 
-      <Stack alignItems='center' gap={4}>
+      <Stack alignItems='center' gap={2} flexWrap='wrap'>
         <AnimatePresence mode='wait'>
           {randomQuestion && (
             <motion.div

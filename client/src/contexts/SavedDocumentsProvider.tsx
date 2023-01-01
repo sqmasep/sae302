@@ -31,7 +31,7 @@ const SavedDocumentsProvider: React.FC<SavedDocumentsInterface> = ({
     array: documents,
     push,
     setArray,
-  } = useArrayStorage<Document>("savedDocuments", []);
+  } = useArrayStorage<Document>("interferences-saved", []);
 
   const inArray = (element: Document) =>
     !!documents.find(doc => doc._id === element._id);

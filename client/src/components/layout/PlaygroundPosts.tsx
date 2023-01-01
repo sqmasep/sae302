@@ -67,7 +67,7 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
             key={`grid-card-${card._id}`}
             item
             xs={12}
-            sm={8}
+            sm={6}
             lg={3}
           >
             <CardWrapper

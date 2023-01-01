@@ -3,48 +3,74 @@ import React from "react";
 import { PlayArrow, Search } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import MovieName from "../../components/MovieName/MovieName";
+import { Helmet } from "react-helmet-async";
 
-const MotionTypography = motion(Typography);
 const MotionButton = motion(Button);
 
 const Home: React.FC = () => {
   return (
-    <Container>
-      <Grid
-        container
-        sx={{
-          placeContent: "center",
-          placeItems: "center",
-          height: "100vh",
-          gap: 2,
-        }}
-      >
-        <Grid item>
-          <Stack direction='column' gap={4}>
-            <MotionTypography variant='h1' layoutId='movie-name'>
-              Interférences
-            </MotionTypography>
+    <>
+      <Helmet>
+        <title>Interférences - Court métrage intéractif</title>
+      </Helmet>
 
-            <Stack gap={1} alignSelf='center'>
-              <MotionButton
-                layoutId='video'
-                onClick={() => {}}
-                endIcon={<PlayArrow />}
-                variant='contained'
-                size='large'
-                component={Link}
-                to='/film'
-              >
-                Voir le film
-              </MotionButton>
-              <Button component={Link} to='/playground' endIcon={<Search />}>
-                Commencer les recherches
-              </Button>
+      <Container>
+        <Grid
+          container
+          sx={{
+            placeContent: "center",
+            placeItems: "center",
+            height: "100vh",
+            gap: 2,
+          }}
+        >
+          <Grid item>
+            <Stack direction='column' gap={4}>
+              <MovieName
+                variant='h1'
+                textAlign='center'
+                sx={{
+                  "@media (max-width: 600px)": {
+                    fontSize: "2.5rem",
+                  },
+                }}
+              />
+              <Stack gap={1} alignSelf='center' flexWrap='wrap'>
+                <MotionButton
+                  layoutId='video'
+                  endIcon={<PlayArrow />}
+                  variant='contained'
+                  size='large'
+                  component={Link}
+                  to='/film'
+                  sx={{
+                    "@media (max-width: 600px)": {
+                      width: "100%",
+                    },
+                  }}
+                >
+                  Voir le film
+                </MotionButton>
+                <Button
+                  component={Link}
+                  size='large'
+                  to='/playground'
+                  endIcon={<Search />}
+                  sx={{
+                    "@media (max-width: 600px)": {
+                      width: "100%",
+                    },
+                  }}
+                >
+                  Commencer les recherches
+                </Button>
+              </Stack>
             </Stack>
-          </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </>
   );
 };
 

@@ -12,6 +12,7 @@ import Temporaire from "./pages/temporaire/Temporaire";
 import theme from "./theme";
 import Confetti from "react-confetti";
 import SettingsProvider from "./contexts/SettingsProvider";
+import { HelmetProvider } from "react-helmet-async";
 
 const MotionBox = motion(Box);
 
@@ -102,22 +103,24 @@ const App: React.FC = () => {
   if (!element) return null;
 
   return (
-    <ThemeProvider theme={theme}>
-      <SettingsProvider>
-        <CssBaseline />
-        <LevelContextProvider>
-          {/* <AnimateSharedLayout> */}
-          <PreviewProvider>
-            <AnimatePresence mode='wait'>
-              {React.cloneElement(element, { key: location.pathname })}
-            </AnimatePresence>
-          </PreviewProvider>
-          {/* </AnimateSharedLayout> */}
-        </LevelContextProvider>
-        <NbUsers />
-        <Chatbox />
-      </SettingsProvider>
-    </ThemeProvider>
+    <HelmetProvider>
+      <ThemeProvider theme={theme}>
+        <SettingsProvider>
+          <CssBaseline />
+          <LevelContextProvider>
+            {/* <AnimateSharedLayout> */}
+            <PreviewProvider>
+              <AnimatePresence mode='wait'>
+                {React.cloneElement(element, { key: location.pathname })}
+              </AnimatePresence>
+            </PreviewProvider>
+            {/* </AnimateSharedLayout> */}
+          </LevelContextProvider>
+          <NbUsers />
+          <Chatbox />
+        </SettingsProvider>
+      </ThemeProvider>
+    </HelmetProvider>
   );
 };
 
