@@ -1,13 +1,18 @@
 import { VolumeOff, VolumeUp } from "@mui/icons-material";
 import { FormControlLabel, Stack, Switch } from "@mui/material";
+import { motion } from "framer-motion";
 import React from "react";
 import { useSettings } from "../../contexts/SettingsProvider";
 
-const SfxSwitch: React.FC = () => {
+const MotionStack = motion(Stack);
+
+const SfxSwitch: React.FC<React.ComponentProps<typeof MotionStack>> = ({
+  ...props
+}) => {
   const { settings, toggleSfx } = useSettings();
 
   return (
-    <Stack gap={2} alignItems='center'>
+    <MotionStack gap={2} alignItems='center' {...props}>
       <FormControlLabel
         label={settings.sfx ? <VolumeUp /> : <VolumeOff />}
         control={
@@ -18,7 +23,7 @@ const SfxSwitch: React.FC = () => {
           />
         }
       />
-    </Stack>
+    </MotionStack>
   );
 };
 

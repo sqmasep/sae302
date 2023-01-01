@@ -1,6 +1,6 @@
 import { Button, Stack, styled, TextField, Typography } from "@mui/material";
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useLevelContext } from "../../contexts/LevelProvider";
@@ -37,52 +37,56 @@ const PlaygroundHeader: React.FC = () => {
       gap={4}
       sx={{ py: 2 }}
     >
-      <StyledLink to='/'>
-        <MovieName />
-      </StyledLink>
+      <LayoutGroup>
+        <Stack alignItems='center' gap={4} flexWrap='wrap'>
+          <StyledLink to='/'>
+            <MovieName />
+          </StyledLink>
+        </Stack>
+        <SfxSwitch layout />
 
-      <SfxSwitch />
-
-      <Stack alignItems='center' gap={2} flexWrap='wrap'>
-        <AnimatePresence mode='wait'>
-          {randomQuestion && (
-            <motion.div
-              key={randomQuestion}
-              initial={{
-                opacity: 0,
-                y: 100,
-                scale: 0.9,
-              }}
-              animate={{
-                opacity: [0, 0.75, 1],
-                y: 0,
-                scale: 1,
-                transition: { duration: 0.5 },
-              }}
-              exit={{
-                opacity: 0,
-                y: -100,
-                scale: 0.9,
-                transition: { duration: 0.3 },
-              }}
-            >
-              <Typography fontWeight={900}>{randomQuestion}</Typography>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <Formik initialValues={{ answer: "" }} onSubmit={sendAnswer}>
-          {() => {
-            return (
-              <Form>
-                <Stack alignItems='center' spacing={2}>
-                  <Field as={TextField} name='answer' size='small' />
-                  <Button type='submit'>Répondre</Button>
-                </Stack>
-              </Form>
-            );
-          }}
-        </Formik>
-      </Stack>
+        <Stack alignItems='center' gap={2} flexWrap='wrap'>
+          <AnimatePresence mode='wait'>
+            {randomQuestion && (
+              <motion.div
+                layout
+                key={randomQuestion}
+                initial={{
+                  opacity: 0,
+                  y: 100,
+                  scale: 0.9,
+                }}
+                animate={{
+                  opacity: [0, 0.75, 1],
+                  y: 0,
+                  scale: 1,
+                  transition: { duration: 0.5 },
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -100,
+                  scale: 0.9,
+                  transition: { duration: 0.3 },
+                }}
+              >
+                <Typography fontWeight={900}>{randomQuestion}</Typography>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <Formik initialValues={{ answer: "" }} onSubmit={sendAnswer}>
+            {() => {
+              return (
+                <Form>
+                  <Stack alignItems='center' spacing={2}>
+                    <Field as={TextField} name='answer' size='small' />
+                    <Button type='submit'>Répondre</Button>
+                  </Stack>
+                </Form>
+              );
+            }}
+          </Formik>
+        </Stack>
+      </LayoutGroup>
     </Stack>
   );
 };
