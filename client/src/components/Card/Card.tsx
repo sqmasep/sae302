@@ -14,7 +14,6 @@ const Card: React.FC<
     controls?: boolean;
     imgSource?: string;
     saving?: boolean;
-    isDragging?: boolean;
     x?: MotionValue<number>;
     y?: MotionValue<number>;
     setSaving?: (saving: boolean) => void;
@@ -27,7 +26,6 @@ const Card: React.FC<
   imgSource = card.sourceLowRes,
   style,
   saving,
-  isDragging,
   x,
   y,
   setSaving = () => {},
@@ -49,18 +47,18 @@ const Card: React.FC<
       drag={!("ontouchstart" in window) && drag}
       dragMomentum={false}
       style={{
-        // zIndex: isDragging ? 1 : 0,
         ...(x && y ? { x, y } : undefined),
       }}
       {...props}
       sx={{
         position: "relative",
         maxHeight: "100%",
+        outline: "none",
       }}
     >
       {/* layoutId wrapper div */}
       <motion.div style={style} layoutId={layoutId}>
-        {/* overlay box */}
+        {/* overlay box causing borders visible
         <Box
           sx={{
             position: "absolute",
@@ -68,7 +66,9 @@ const Card: React.FC<
             backgroundImage:
               "radial-gradient(circle at 0 100%, #0001, transparent)",
           }}
-        />
+        /> */}
+
+        {/* image */}
         <motion.img
           draggable='false'
           style={{
@@ -79,7 +79,8 @@ const Card: React.FC<
           }}
           src={`/imgs/playground/${imgSource}`}
         />
-        {/* blur box */}
+
+        {/* blur aesthetic box */}
         <Box
           sx={{
             position: "absolute",
@@ -97,6 +98,7 @@ const Card: React.FC<
             zIndex: -1,
           }}
         />
+
         {/* save checkbox */}
         {controls && (
           <MotionCheckbox
@@ -111,6 +113,7 @@ const Card: React.FC<
               position: "absolute",
               bottom: 0,
               left: 0,
+              m: 0.5,
             }}
             color='primary'
           />

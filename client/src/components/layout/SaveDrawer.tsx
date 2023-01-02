@@ -20,6 +20,7 @@ const MotionTypography = motion(Typography);
 
 const StyledDrawer = styled(Drawer)(() => ({
   "& .MuiDrawer-paper": {
+    backgroundColor: "black",
     overflowY: "auto",
     overflowX: "hidden",
     maxWidth: "20rem",

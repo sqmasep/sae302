@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Grid } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Box, Grid, IconButton } from "@mui/material";
 import Card from "../Card/Card";
 import {
   animate,
@@ -8,8 +8,6 @@ import {
   motion,
   useMotionValue,
   Variants,
-  LayoutGroup,
-  useTransform,
 } from "framer-motion";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import { usePreview } from "../../contexts/PreviewProvider";
@@ -17,6 +15,8 @@ import { Document } from "../../pages/Playground/Playground";
 import socket from "../../lib/socket";
 import Loading from "../Loading/Loading";
 import { useSettings } from "../../contexts/SettingsProvider";
+import { Close } from "@mui/icons-material";
+import useKeys from "../../hooks/useKeys";
 
 interface CardWrapperInterface {
   card: Document;
@@ -47,6 +47,8 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
 }) => {
   const { posts, isLoading } = useLevelContext();
   const { selectedDocument, setSelectedDocument } = usePreview();
+
+  useKeys(["Escape", "Backspace"], () => setSelectedDocument(null));
 
   return posts.length ? (
     <MotionGrid
@@ -97,6 +99,14 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               />
+
+              {/* close button */}
+              <Box sx={{ position: "absolute", right: 0, m: 5, zIndex: 1 }}>
+                <IconButton onClick={() => setSelectedDocument(null)}>
+                  <Close />
+                </IconButton>
+              </Box>
+
               <Box
                 sx={{
                   position: "absolute",
@@ -112,6 +122,7 @@ const PlaygroundPosts: React.FC<React.ComponentProps<typeof MotionGrid>> = ({
                     maxWidth: "95%",
                     margin: "auto",
                   }}
+                  onPointerDownCapture={e => e.stopPropagation()}
                   layoutId={`card-${selectedDocument._id}`}
                   card={selectedDocument}
                   imgSource={selectedDocument.sourceHighRes}
@@ -168,7 +179,6 @@ const CardWrapper: React.FC<
       }}
       saving={saving}
       setSaving={setSaving}
-      isDragging={dragging}
       style={{
         cursor: dragging ? "grabbing" : "grab",
         zIndex: dragging ? 1000 : 0,
