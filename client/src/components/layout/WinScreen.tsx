@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
 import { useLevelContext } from "../../contexts/LevelProvider";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import socket from "../../lib/socket";
 
 const MotionStack = motion(Stack);
@@ -16,6 +17,10 @@ const WinScreen: React.FC = () => {
   const { reset, token } = useLevelContext();
   const [isFirstWinner, setIsFirstWinner] = useState(false);
   const [alreadyInLeaderboard, setAlreadyInLeaderboard] = useState(false);
+  const [winnerToken, setWinnerToken] = useLocalStorage(
+    "interferences-winner-token",
+    false
+  );
 
   const handleSendNickname = (
     { nickname }: Nickname,
@@ -31,9 +36,9 @@ const WinScreen: React.FC = () => {
       setAlreadyInLeaderboard(true);
     });
 
-    socket.on("firstWinner", ({ isFirstWinner }) => {
+    socket.on("firstWinner", ({ isFirstWinner, winnerToken }) => {
       setIsFirstWinner(isFirstWinner);
-      console.log("first winner !");
+      setWinnerToken(winnerToken);
     });
   }, []);
 

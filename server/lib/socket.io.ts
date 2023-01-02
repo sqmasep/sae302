@@ -108,7 +108,14 @@ io.on("connection", async socket => {
       );
 
       if (winners.length === 0) {
-        socket.emit("firstWinner", { isFirstWinner: !winners.length });
+        const winnerToken = jwt.sign(
+          { winnerId: socket.id },
+          process.env.JWT_SECRET_KEY
+        );
+        socket.emit("firstWinner", {
+          isFirstWinner: !winners.length,
+          winnerToken,
+        });
         const winner = await Winner.create({
           socketId: socket.id,
           date: new Date(Date.now()),
