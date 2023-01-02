@@ -47,9 +47,9 @@ const WinScreen: React.FC = () => {
       <Confetti width={innerWidth} height={innerHeight} />
 
       <MotionStack
-        initial={{}}
-        animate={{}}
-        exit={{}}
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 50, opacity: 0 }}
         direction='column'
         gap={2}
         alignItems='center'
@@ -57,7 +57,7 @@ const WinScreen: React.FC = () => {
       >
         <Typography variant='h1'>et zé gagné!</Typography>
         {isFirstWinner && (
-          <Typography variant='h2'>
+          <Typography variant='subtitle1' component='h2' textAlign='center'>
             Tu es le premier à avoir gagné ! Contacte les organisateurs
           </Typography>
         )}
