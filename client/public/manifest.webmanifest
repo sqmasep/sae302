@@ -1,0 +1,32 @@
+{
+    "theme_color": "#5379FF",
+    "background_color": "#121212",
+    "display": "browser",
+    "scope": "/",
+    "start_url": "/",
+    "name": "Interf\u00e9rences - Un court m\u00e9trage int\u00e9ractif",
+    "short_name": "Interf\u00e9rences",
+    "description": "Une histoire myst\u00e9rieuse impliquant un groupe de personnes \u00e9tranges... Un court m\u00e9trage int\u00e9ractif",
+    "icons": [
+        {
+            "src": "/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
