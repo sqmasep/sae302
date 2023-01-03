@@ -5,6 +5,10 @@ const Winner = new mongoose.Schema({
     type: String,
     required: true,
   },
+  winnerToken: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     required: true,

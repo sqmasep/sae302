@@ -119,6 +119,7 @@ io.on("connection", async socket => {
         const winner = await Winner.create({
           socketId: socket.id,
           date: new Date(Date.now()),
+          winnerToken,
         });
         log.success("Winner created");
       }
