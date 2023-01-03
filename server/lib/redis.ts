@@ -10,7 +10,7 @@ export let isConnected: boolean = false;
 (async () => {
   try {
     await redisClient.connect();
-    log.success("Redis: connected");
+    log.info(`Redis: ${log.good("connected")}`);
     isConnected = true;
   } catch (error) {
     log.error("Redis: failed to connect");

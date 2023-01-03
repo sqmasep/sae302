@@ -20,6 +20,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       HAS_CACHE: string;
+      RATE_LIMIT_DELAY: number;
       JWT_SECRET_KEY: string;
     }
   }
@@ -74,6 +75,6 @@ app.post(
   }
 );
 
-server.listen(PORT, () =>
-  log.info(`HTTP Server: listening at port ${log.danger(PORT)}`)
-);
+server.listen(PORT, () => {
+  log.info(`HTTP Server: ${log.good("listening")} at port ${log.danger(PORT)}`);
+});

@@ -159,10 +159,14 @@ io.on("connection", async socket => {
   });
 
   // rate limiter
-  let rateLimit = false;
+  let rateLimit: boolean = false;
 
   socket.on("sendAnswer", async ({ token, answer }) => {
-    if (rateLimit) return socket.emit("error", "Trop de requêtes");
+    if (rateLimit)
+      return socket.emit(
+        "error",
+        "Trop de requêtes, veuillez attendre quelques secondes"
+      );
     rateLimit = true;
 
     // parsing data
@@ -251,7 +255,7 @@ io.on("connection", async socket => {
     } finally {
       setTimeout(() => {
         rateLimit = false;
-      }, 5000);
+      }, process.env.RATE_LIMIT_DELAY ?? 10000);
     }
   });
 
