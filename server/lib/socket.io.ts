@@ -158,7 +158,13 @@ io.on("connection", async socket => {
     socket.emit("receivePosts", { posts, question });
   });
 
+  // rate limiter
+  let rateLimit = false;
+
   socket.on("sendAnswer", async ({ token, answer }) => {
+    if (rateLimit) return socket.emit("error", "Trop de requêtes");
+    rateLimit = true;
+
     // parsing data
     const tokenSchema = z.string();
     const answerSchema = z.string();
@@ -242,6 +248,10 @@ io.on("connection", async socket => {
     } catch (error) {
       log.error(error);
       socket.emit("error", "Une erreur interne est survenue.");
+    } finally {
+      setTimeout(() => {
+        rateLimit = false;
+      }, 5000);
     }
   });
 
