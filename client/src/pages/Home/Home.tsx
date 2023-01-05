@@ -23,24 +23,25 @@ const Home: React.FC = () => {
           sx={{
             placeContent: "center",
             placeItems: "center",
+            maxHeight: "100vh",
             height: "100vh",
+            overflowY: "clip",
             gap: 2,
           }}
         >
           <Grid item>
-            <Stack direction='column' gap={4}>
+            <Stack direction='column' gap={4} mb={16}>
               <MovieName
                 variant='h1'
                 textAlign='center'
                 sx={{
                   "@media (max-width: 600px)": {
-                    fontSize: "2.5rem",
+                    fontSize: "clamp(2rem, 10vw, 3rem)",
                   },
                 }}
               />
               <Stack gap={1} alignSelf='center' flexWrap='wrap'>
                 <MotionButton
-                  layoutId='video'
                   endIcon={<PlayArrow />}
                   variant='contained'
                   size='large'
@@ -57,7 +58,7 @@ const Home: React.FC = () => {
                 <Button
                   component={Link}
                   size='large'
-                  to='/playground'
+                  to='/'
                   endIcon={<Search />}
                   sx={{
                     "@media (max-width: 600px)": {

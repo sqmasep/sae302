@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect } from "react";
 import Player from "react-player";
@@ -49,7 +49,16 @@ const Film: React.FC = () => {
               boxShadow: "0 2em 4em 1em rgba(0, 0, 0, 0.3)",
             }}
           ></motion.video>
-
+          <Typography
+            sx={{ mt: 6, color: "#666", maxWidth: 700, marginInline: "auto" }}
+            textAlign='center'
+            fontSize={18}
+          >
+            Interférences est un court-métrage réalisé par des étudiants de BUT
+            MMI qui raconte l’histoire de Gabriel, un jeune homme à la vie
+            tranquille qui commence soudainement à vivre des expériences
+            étranges.
+          </Typography>
           {/* <Player
           pip
           width='100%'

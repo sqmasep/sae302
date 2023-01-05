@@ -12,7 +12,9 @@ const MovieName: React.FC<React.ComponentProps<typeof MotionTypography>> = ({
       layoutId='movie-name'
       variant='h3'
       component='h1'
-      fontWeight={900}
+      // fontWeight={900}
+      fontWeight={400}
+      fontFamily='Balthazar'
       {...props}
     >
       Interférences

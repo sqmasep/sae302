@@ -13,6 +13,7 @@ import theme from "./theme";
 import Confetti from "react-confetti";
 import SettingsProvider from "./contexts/SettingsProvider";
 import { HelmetProvider } from "react-helmet-async";
+import NotFound from "./404";
 
 const MotionBox = motion(Box);
 
@@ -96,6 +97,14 @@ const App: React.FC = () => {
       ),
     },
     { path: "/temporaire", element: <Temporaire /> },
+    {
+      path: "*",
+      element: (
+        <AnimatedPage>
+          <NotFound />
+        </AnimatedPage>
+      ),
+    },
   ]);
 
   const location = useLocation();
