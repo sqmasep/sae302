@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import MovieName from "../../components/MovieName/MovieName";
 import { Helmet } from "react-helmet-async";
+import { formatDistance } from "date-fns";
+import { fr } from "date-fns/locale";
 
 const MotionButton = motion(Button);
 
@@ -43,14 +45,14 @@ const Home: React.FC = () => {
                   variant='contained'
                   size='large'
                   component={Link}
-                  to='/film'
+                  to='/trailer'
                   sx={{
                     "@media (max-width: 600px)": {
                       width: "100%",
                     },
                   }}
                 >
-                  Voir le film
+                  Voir le trailer
                 </MotionButton>
                 <Button
                   component={Link}
@@ -62,8 +64,13 @@ const Home: React.FC = () => {
                       width: "100%",
                     },
                   }}
+                  disabled
                 >
-                  Commencer les recherches
+                  Disponible dans{" "}
+                  {formatDistance(new Date(), new Date("2023-01-11"), {
+                    locale: fr,
+                  })}
+                  {/* Commencer les recherches */}
                 </Button>
               </Stack>
             </Stack>

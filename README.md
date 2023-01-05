@@ -1,6 +1,6 @@
 # Introduction
 
-La SAE 302 en BUT MMI 2ème année à l'IUT de Lens a pour but de mixer la totalité des compétences acquises au fil de la première et deuxième année, et faire un projet par groupe de 6 qui réunit web, audiovisuel et communication. Elle s'étend entre mi-septembre et début janvier. La majorité de mon groupe étant orienté audiovisuel, on s'est penché sur un court-métrage mais il fallait ajouter la dimension du web, c'est pourquoi ce site a été développé et a pour but de suivre la "fin" du court-métrage, en étant intéractif. Le projet doit être rendu début janvier, et celui-ci sera exposé à la Nuit MMI le 5 janvier
+La SAE 302 en BUT MMI 2ème année à l'IUT de Lens a pour but de mixer la totalité des compétences acquises au fil de la première et deuxième année, et faire un projet par groupe de 6 qui réunit web, audiovisuel et communication. Elle s'étend entre mi-septembre et début janvier. La majorité de mon groupe étant orienté audiovisuel, on s'est penché sur un court-métrage mais il fallait ajouter la dimension du web, c'est pourquoi ce site a été développé et a pour but de suivre la "fin" du court-métrage, en étant intéractif. Le projet doit être rendu début janvier, et celui-ci sera exposé à la Nuit MMI le 5 janvier 2023. Disponible sur youtube le 11 janvier 2023
 
 # Technologies
 

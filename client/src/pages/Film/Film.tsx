@@ -41,7 +41,7 @@ const Film: React.FC = () => {
           <motion.video
             width='100%'
             height='100%'
-            src='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
+            src='/vids/trailer.mp4'
             autoPlay
             controls
             style={{

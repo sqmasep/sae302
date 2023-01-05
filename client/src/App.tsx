@@ -41,41 +41,41 @@ const App: React.FC = () => {
         </AnimatedPage>
       ),
     },
+    // {
+    //   path: "/playground",
+    //   element: (
+    //     <>
+    //       <AnimatedPage>
+    //         <Playground />
+    //       </AnimatedPage>
+    //       <MotionBox
+    //         initial={{ scaleY: 0, transformOrigin: "bottom" }}
+    //         animate={{ scaleY: 1, transformOrigin: "bottom" }}
+    //         exit={{
+    //           scaleY: 0,
+    //           transformOrigin: "bottom",
+    //           transition: { duration: 0.1 },
+    //         }}
+    //         transition={{ duration: 0.7 }}
+    //         sx={{
+    //           position: "fixed",
+    //           top: 0,
+    //           left: 0,
+    //           bottom: 0,
+    //           right: 0,
+    //           minWidth: "100vw",
+    //           minHeight: "100vh",
+    //           backgroundImage: "linear-gradient(to bottom, transparent, #0009)",
+    //           zIndex: 1048,
+    //           pointerEvents: "none",
+    //           touchAction: "none",
+    //         }}
+    //       />
+    //     </>
+    //   ),
+    // },
     {
-      path: "/playground",
-      element: (
-        <>
-          <AnimatedPage>
-            <Playground />
-          </AnimatedPage>
-          <MotionBox
-            initial={{ scaleY: 0, transformOrigin: "bottom" }}
-            animate={{ scaleY: 1, transformOrigin: "bottom" }}
-            exit={{
-              scaleY: 0,
-              transformOrigin: "bottom",
-              transition: { duration: 0.1 },
-            }}
-            transition={{ duration: 0.7 }}
-            sx={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              minWidth: "100vw",
-              minHeight: "100vh",
-              backgroundImage: "linear-gradient(to bottom, transparent, #0009)",
-              zIndex: 1048,
-              pointerEvents: "none",
-              touchAction: "none",
-            }}
-          />
-        </>
-      ),
-    },
-    {
-      path: "/film",
+      path: "/trailer",
       element: (
         <>
           <AnimatedPage>
@@ -117,7 +117,7 @@ const App: React.FC = () => {
             {/* </AnimateSharedLayout> */}
           </LevelContextProvider>
           <NbUsers />
-          <Chatbox />
+          {/* <Chatbox /> */}
         </SettingsProvider>
       </ThemeProvider>
     </HelmetProvider>
