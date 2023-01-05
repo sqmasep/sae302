@@ -1,8 +1,10 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, IconButton, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useEffect } from "react";
 import Player from "react-player";
 import { Helmet } from "react-helmet-async";
+import { Home } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const MotionGrid = motion(Grid);
 
@@ -18,6 +20,15 @@ const Film: React.FC = () => {
       <Helmet>
         <title>Interférences - Le film</title>
       </Helmet>
+
+      <IconButton
+        size='large'
+        sx={{ m: 4, color: "#777", position: "absolute" }}
+        component={Link}
+        to='/'
+      >
+        <Home />
+      </IconButton>
 
       <Grid
         container
