@@ -86,13 +86,15 @@ const WinScreen: React.FC = () => {
               initialValues={{ nickname: "" }}
               onSubmit={handleSendNickname}
             >
-              <Form>
+              {({ errors, handleSubmit }) => (
                 <Stack alignItems='center' gap={2}>
                   <Field name='nickname' as={TextField} label='Ton pseudo' />
-                  <ErrorMessage name='nickname' />
-                  <Button>Définir mon pseudo</Button>
+                  {errors.nickname && <ErrorMessage name='nickname' />}
+                  <Button onClick={() => handleSubmit()}>
+                    Définir mon pseudo
+                  </Button>
                 </Stack>
-              </Form>
+              )}
             </Formik>
           )}
 

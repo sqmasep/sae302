@@ -28,7 +28,7 @@ const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const toggleSfx = (force?: boolean) =>
-    setSettings(prev => ({ ...prev, sfx: force ? force : !prev.sfx }));
+    setSettings(prev => ({ ...prev, sfx: force ?? !prev.sfx }));
 
   const playRandomSfx = () => {
     if (!settings.sfx) return;

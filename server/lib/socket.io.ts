@@ -36,6 +36,8 @@ io.on("connection", async socket => {
     let level: Token["level"] = 0;
 
     try {
+      if (!nickname.trim().length) throw new Error("Nickname trop court");
+
       const parsedToken = tokenSchema.parse(token);
       decoded = (await jwtVerify(parsedToken)) as Token;
       level = decoded.level;
@@ -49,7 +51,8 @@ io.on("connection", async socket => {
         );
       }
 
-      const parsedNickname = nickname && nicknameSchema.parse(nickname);
+      const parsedNickname =
+        nickname.trim().length && nicknameSchema.parse(nickname.trim());
 
       // win
       const winners = await fromCache(
