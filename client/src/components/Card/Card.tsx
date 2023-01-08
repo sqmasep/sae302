@@ -102,13 +102,13 @@ const Card: React.FC<
         {/* save checkbox */}
         {controls && (
           <MotionCheckbox
-            icon={<TurnedInNot />}
+            icon={<TurnedInNot color='primary' />}
             checked={inArray(card)}
             onChange={handleChange}
             onTapStart={() => setSaving(true)}
             onTap={() => setSaving(false)}
             value={card.sourceLowRes}
-            checkedIcon={<TurnedIn />}
+            checkedIcon={<TurnedIn color='primary' />}
             sx={{
               position: "absolute",
               bottom: 0,

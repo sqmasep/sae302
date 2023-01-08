@@ -36,7 +36,6 @@ const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
       `/sfx/paper/paper${Math.floor(Math.random() * NUMBER_OF_SFX) + 1}.wav`
     );
     sfx.play();
-    console.log(`play! ${sfx.src}`);
   };
 
   return (

@@ -1,5 +1,17 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
-import { Field, Form, Formik, FormikHelpers } from "formik";
+import {
+  Box,
+  Button,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import Confetti from "react-confetti";
@@ -22,11 +34,15 @@ const WinScreen: React.FC = () => {
     false
   );
 
+  const [openDialog, setOpenDialog] = useState(false);
+
   const handleSendNickname = (
     { nickname }: Nickname,
-    { resetForm }: FormikHelpers<Nickname>
+    { resetForm, setErrors }: FormikHelpers<Nickname>
   ) => {
-    socket.emit("sendNickname", { token, nickname });
+    nickname.length === 0
+      ? setErrors({ nickname: "Veuillez renseigner un pseudo valide" })
+      : socket.emit("sendNickname", { token, nickname });
     resetForm();
   };
 
@@ -44,37 +60,83 @@ const WinScreen: React.FC = () => {
 
   return (
     <>
-      <Confetti width={innerWidth} height={innerHeight} />
+      <Confetti
+        width={innerWidth}
+        height={innerHeight}
+        style={{ zIndex: -1 }}
+      />
+      <Container>
+        <MotionStack
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 50, opacity: 0 }}
+          direction='column'
+          gap={2}
+          alignItems='center'
+          mt={24}
+        >
+          <Typography variant='h1'>et zé gagné!</Typography>
+          {isFirstWinner && (
+            <Typography variant='subtitle1' component='h2' textAlign='center'>
+              Tu es le premier à avoir gagné ! Contacte les organisateurs
+            </Typography>
+          )}
+          {!alreadyInLeaderboard && (
+            <Formik
+              initialValues={{ nickname: "" }}
+              onSubmit={handleSendNickname}
+            >
+              <Form>
+                <Stack alignItems='center' gap={2}>
+                  <Field name='nickname' as={TextField} label='Ton pseudo' />
+                  <ErrorMessage name='nickname' />
+                  <Button>Définir mon pseudo</Button>
+                </Stack>
+              </Form>
+            </Formik>
+          )}
 
-      <MotionStack
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 50, opacity: 0 }}
-        direction='column'
-        gap={2}
-        alignItems='center'
-        mt={24}
-      >
-        <Typography variant='h1'>et zé gagné!</Typography>
-        {isFirstWinner && (
-          <Typography variant='subtitle1' component='h2' textAlign='center'>
-            Tu es le premier à avoir gagné ! Contacte les organisateurs
-          </Typography>
-        )}
-        {!alreadyInLeaderboard && (
-          <Formik
-            initialValues={{ nickname: "" }}
-            onSubmit={handleSendNickname}
-          >
-            <Form>
-              <Field name='nickname' as={TextField} label='Ton pseudo' />
-            </Form>
-          </Formik>
-        )}
-        <Button onClick={reset} size='large'>
-          Je recommence !
-        </Button>
-      </MotionStack>
+          <Box my={12}>
+            <Typography variant='h4' component='h2' sx={{ mb: 4 }}>
+              Tu peux voir la vraie fin du court-métrage
+            </Typography>
+
+            <video
+              src='/vids/trailer.mp4'
+              controls
+              width='100%'
+              height='auto'
+              style={{
+                borderRadius: "1rem",
+                boxShadow: "0 2em 4em 1em rgba(0, 0, 0, 0.3)",
+              }}
+            />
+            <Button
+              sx={{ mt: 4 }}
+              onClick={() => setOpenDialog(true)}
+              size='large'
+            >
+              Je recommence les recherches ! 🧐🕵️‍♀️
+            </Button>
+
+            <Dialog open={openDialog}>
+              <DialogTitle>Recommencer les recherches ?</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Tu vas perdre tous tes progrès et recommencer le jeu depuis le
+                  début, es-tu sûr de vouloir recommencer ?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button variant='outlined' onClick={() => setOpenDialog(false)}>
+                  Annuler
+                </Button>
+                <Button onClick={reset}>Oui ! je recommence</Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        </MotionStack>
+      </Container>
     </>
   );
 };

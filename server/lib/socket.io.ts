@@ -39,7 +39,6 @@ io.on("connection", async socket => {
       const parsedToken = tokenSchema.parse(token);
       decoded = (await jwtVerify(parsedToken)) as Token;
       level = decoded.level;
-      console.log("sendnickname decoded:", decoded);
 
       if (decoded?.win !== true) return;
       if (decoded?.inLeaderboard === true) {
@@ -74,7 +73,6 @@ io.on("connection", async socket => {
         { win: true, inLeaderboard: true },
         process.env.JWT_SECRET_KEY
       );
-      console.log("newToken nickname:", newToken);
       socket.emit("win", { token: newToken });
     } catch (error) {
       log.error(error);
@@ -92,7 +90,6 @@ io.on("connection", async socket => {
       const parsedToken = tokenSchema.parse(token);
       decoded = (await jwtVerify(parsedToken)) as Token;
       level = decoded.level;
-      console.log(decoded);
       if (decoded?.win !== true) return;
       if (decoded?.inLeaderboard === true) {
         socket.emit("alreadyInLeaderboard");
@@ -179,13 +176,11 @@ io.on("connection", async socket => {
 
     try {
       const parsedToken = tokenSchema.parse(token);
-      console.log("parsedToken:", parsedToken);
       const parsedAnswer = answerSchema.parse(answer);
 
       // if the user already answered once
       if (parsedToken && parsedToken !== "0") {
         decoded = (await jwtVerify(parsedToken)) as Token;
-        console.log("decoded token", decoded);
         level = decoded?.level;
       }
 
@@ -206,8 +201,6 @@ io.on("connection", async socket => {
             idQuestion: currentQuestion?._id,
           })
       );
-      console.log("currentQuestion :", currentQuestion);
-      console.log("currentAnswers: ", currentAnswers);
 
       // find answer in variants
       const matchedAnswer = currentAnswers.find(a =>
@@ -243,7 +236,6 @@ io.on("connection", async socket => {
         { level: nextQuestion?.level || "0", idQuestion: nextQuestion?._id },
         process.env.JWT_SECRET_KEY
       );
-      console.log(newToken);
 
       socket.emit("receiveToken", {
         token: newToken,
@@ -270,7 +262,6 @@ io.on("connection", async socket => {
       const { content: parsedContent, pathname: parsedPathname } = schema.parse(
         { content, pathname }
       );
-      console.log(parsedPathname);
 
       const trimmedParsedContent = parsedContent.trim();
 

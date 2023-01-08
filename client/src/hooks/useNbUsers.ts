@@ -5,7 +5,6 @@ const useNbUsers = () => {
   const [nbUsers, setNbUsers] = useState(1);
   socket.on("nbUsers", nbUsers => {
     setNbUsers(nbUsers);
-    console.log("nbUsers: ", nbUsers);
   });
 
   return nbUsers;

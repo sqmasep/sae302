@@ -14,6 +14,7 @@ import Confetti from "react-confetti";
 import SettingsProvider from "./contexts/SettingsProvider";
 import { HelmetProvider } from "react-helmet-async";
 import NotFound from "./404";
+import CheckWinnerToken from "./pages/CheckWinnerToken/CheckWinnerToken";
 
 const MotionBox = motion(Box);
 
@@ -42,39 +43,39 @@ const App: React.FC = () => {
         </AnimatedPage>
       ),
     },
-    // {
-    //   path: "/playground",
-    //   element: (
-    //     <>
-    //       <AnimatedPage>
-    //         <Playground />
-    //       </AnimatedPage>
-    //       <MotionBox
-    //         initial={{ scaleY: 0, transformOrigin: "bottom" }}
-    //         animate={{ scaleY: 1, transformOrigin: "bottom" }}
-    //         exit={{
-    //           scaleY: 0,
-    //           transformOrigin: "bottom",
-    //           transition: { duration: 0.1 },
-    //         }}
-    //         transition={{ duration: 0.7 }}
-    //         sx={{
-    //           position: "fixed",
-    //           top: 0,
-    //           left: 0,
-    //           bottom: 0,
-    //           right: 0,
-    //           minWidth: "100vw",
-    //           minHeight: "100vh",
-    //           backgroundImage: "linear-gradient(to bottom, transparent, #0009)",
-    //           zIndex: 1048,
-    //           pointerEvents: "none",
-    //           touchAction: "none",
-    //         }}
-    //       />
-    //     </>
-    //   ),
-    // },
+    {
+      path: "/playground",
+      element: (
+        <>
+          <AnimatedPage>
+            <Playground />
+          </AnimatedPage>
+          <MotionBox
+            initial={{ scaleY: 0, transformOrigin: "bottom" }}
+            animate={{ scaleY: 1, transformOrigin: "bottom" }}
+            exit={{
+              scaleY: 0,
+              transformOrigin: "bottom",
+              transition: { duration: 0.1 },
+            }}
+            transition={{ duration: 0.7 }}
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              minWidth: "100vw",
+              minHeight: "100vh",
+              backgroundImage: "linear-gradient(to bottom, transparent, #0009)",
+              zIndex: 1048,
+              pointerEvents: "none",
+              touchAction: "none",
+            }}
+          />
+        </>
+      ),
+    },
     {
       path: "/trailer",
       element: (
@@ -94,6 +95,14 @@ const App: React.FC = () => {
             exit={{ opacity: 0 }}
           />
         </>
+      ),
+    },
+    {
+      path: "/check-winner-token",
+      element: (
+        <AnimatedPage>
+          <CheckWinnerToken />
+        </AnimatedPage>
       ),
     },
     { path: "/temporaire", element: <Temporaire /> },

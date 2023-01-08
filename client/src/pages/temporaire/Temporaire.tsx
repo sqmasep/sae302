@@ -81,7 +81,6 @@ const Temporaire: React.FC = () => {
 
   const sendQuestions = ({ level }: any) => {
     if (!questions.length) return console.log("need questions");
-    console.log("level: ", level);
     socket.emit("sendQuestion", { questions, level });
     setQuestions([]);
   };
