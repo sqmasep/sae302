@@ -102,27 +102,25 @@ io.on("connection", async socket => {
         );
       }
 
-      const winners = await fromCache(
-        "winners",
-        async () => await Winner.find()
+      const winners = await Winner.find();
+      const dateNow = new Date(Date.now());
+      const winnerToken = jwt.sign(
+        { winnerId: socket.id, date: dateNow },
+        process.env.JWT_SECRET_KEY
       );
 
       if (winners.length === 0) {
-        const winnerToken = jwt.sign(
-          { winnerId: socket.id },
-          process.env.JWT_SECRET_KEY
-        );
         socket.emit("firstWinner", {
           isFirstWinner: !winners.length,
           winnerToken,
         });
-        const winner = await Winner.create({
-          socketId: socket.id,
-          date: new Date(Date.now()),
-          winnerToken,
-        });
-        log.success("Winner created");
       }
+      const winner = await Winner.create({
+        socketId: socket.id,
+        date: dateNow,
+        winnerToken,
+      });
+      log.success("Winner created");
     } catch (error) {
       log.error(error);
       socket.emit("error", "Une erreur interne est survenue.");
@@ -220,8 +218,13 @@ io.on("connection", async socket => {
 
       // it's a win!
       if (matchedAnswer.last) {
+        const dateNow = new Date(Date.now());
+
         log.info(`Answer: ${log.good("last")}`);
-        const newToken = jwt.sign({ win: true }, process.env.JWT_SECRET_KEY);
+        const newToken = jwt.sign(
+          { win: true, date: dateNow },
+          process.env.JWT_SECRET_KEY
+        );
         return socket.emit("win", { token: newToken });
       }
 
