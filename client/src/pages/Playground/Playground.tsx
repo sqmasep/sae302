@@ -33,6 +33,24 @@ export interface Document {
   idQuestions: string[];
 }
 
+const features = [
+  {
+    icon: <ZoomIn />,
+    text: "Cliquer pour zoomer sur un document",
+    mobile: true,
+  },
+  {
+    icon: <PanTool />,
+    text: "Bouger les éléments",
+    mobile: false,
+  },
+  {
+    icon: <Bookmark />,
+    text: "Sauvegarder les documents",
+    mobile: true,
+  },
+];
+
 const Playground: React.FC = () => {
   const { win, token } = useLevelContext();
   const [dialogIsOpen, setDialogIsOpen] = useState(true);
@@ -65,23 +83,7 @@ const Playground: React.FC = () => {
                     <DialogContentText>
                       Le projet et les documents sont fictifs. Tu peux:
                       <List>
-                        {[
-                          {
-                            icon: <ZoomIn />,
-                            text: "Cliquer pour zoomer sur un document",
-                            mobile: true,
-                          },
-                          {
-                            icon: <PanTool />,
-                            text: "Bouger les éléments",
-                            mobile: false,
-                          },
-                          {
-                            icon: <Bookmark />,
-                            text: "Sauvegarder les documents",
-                            mobile: true,
-                          },
-                        ].map(feature => {
+                        {features.map(feature => {
                           if ("ontouchstart" in window && !feature.mobile) {
                             return null;
                           }
