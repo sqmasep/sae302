@@ -281,28 +281,4 @@ io.on("connection", async socket => {
       socket.emit("error", "Une erreur interne est survenue.");
     }
   });
-
-  // NOTE: DEV (temporaire)
-  socket.on("sendQuestion", async ({ questions, level }) => {
-    log.info(`Questions: ${questions}`);
-    log.info(`level: ${level}`);
-    await Question.create({ question: [...questions], level });
-    log.success("Question sent successfully");
-  });
-  socket.on("getQuestions", async () => {
-    const data = await Question.find();
-    socket.emit("receiveQuestions", data);
-  });
-  socket.on(
-    "createAnswer",
-    async ({ variants, nextIdQuestion, idQuestion, last = false }) => {
-      log.info(`${variants}
-      ${nextIdQuestion}
-      ${idQuestion}
-      ${last}
-    `);
-      last && (nextIdQuestion = null);
-      await Answer.create({ variants, nextIdQuestion, idQuestion, last });
-    }
-  );
 });

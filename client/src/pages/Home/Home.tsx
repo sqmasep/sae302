@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { Button, Container, Grid, Stack } from "@mui/material";
 import React from "react";
 import { PlayArrow, Search } from "@mui/icons-material";
 import { Link } from "react-router-dom";

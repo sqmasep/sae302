@@ -1,7 +1,7 @@
 import { TurnedIn, TurnedInNot } from "@mui/icons-material";
-import { Box, Checkbox, Tooltip, Zoom } from "@mui/material";
-import { motion, MotionValue, useMotionValue } from "framer-motion";
-import React, { useState } from "react";
+import { Box, Checkbox } from "@mui/material";
+import { motion, MotionValue } from "framer-motion";
+import React from "react";
 import { useSavedDocuments } from "../../contexts/SavedDocumentsProvider";
 import { Document } from "../../pages/Playground/Playground";
 

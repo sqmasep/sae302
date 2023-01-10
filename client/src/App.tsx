@@ -1,20 +1,18 @@
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
-import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { useLocation, useRoutes } from "react-router-dom";
-import Chatbox from "./components/Chatbox/Chatbox";
 import NbUsers from "./components/layout/NbUsers";
 import { LevelContextProvider } from "./contexts/LevelProvider";
 import PreviewProvider from "./contexts/PreviewProvider";
-import { Home, Playground } from "./pages";
 import Film from "./pages/Film/Film";
-import Temporaire from "./pages/temporaire/Temporaire";
 import theme from "./theme";
-import Confetti from "react-confetti";
 import SettingsProvider from "./contexts/SettingsProvider";
 import { HelmetProvider } from "react-helmet-async";
 import NotFound from "./404";
 import CheckWinnerToken from "./pages/CheckWinnerToken/CheckWinnerToken";
+import Home from "./pages/Home/Home";
+import Playground from "./pages/Playground/Playground";
 
 const MotionBox = motion(Box);
 
@@ -105,7 +103,6 @@ const App: React.FC = () => {
         </AnimatedPage>
       ),
     },
-    { path: "/temporaire", element: <Temporaire /> },
     {
       path: "*",
       element: (

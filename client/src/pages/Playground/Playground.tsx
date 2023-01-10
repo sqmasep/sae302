@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  ButtonGroup,
   Container,
   Dialog,
   DialogActions,
@@ -12,7 +11,6 @@ import {
   Link,
   List,
   ListItem,
-  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import SavePosts from "../../components/layout/SavePosts";
@@ -21,7 +19,6 @@ import PlaygroundPosts from "../../components/layout/PlaygroundPosts";
 import PlaygroundHeader from "../../components/layout/PlaygroundHeader";
 import Snackbar from "../../components/Snackbar/Snackbar";
 import { useLevelContext } from "../../contexts/LevelProvider";
-import Confetti from "react-confetti";
 import WinScreen from "../../components/layout/WinScreen";
 import { Helmet } from "react-helmet-async";
 import { Bookmark, Close, PanTool, ZoomIn } from "@mui/icons-material";
