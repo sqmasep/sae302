@@ -33,7 +33,7 @@ const Film: React.FC = () => {
 
       <IconButton
         size='large'
-        sx={{ m: 4, position: "absolute", color: "#777" }}
+        sx={{ m: 4, position: "absolute", zIndex: 999, color: "#777" }}
         component={Link}
         to='/'
       >
@@ -52,7 +52,7 @@ const Film: React.FC = () => {
           item
         >
           {/* video player */}
-          <motion.video
+          {/* <motion.video
             width='100%'
             height='100%'
             src='/vids/trailer.mp4'
@@ -62,6 +62,13 @@ const Film: React.FC = () => {
               borderRadius: "1rem",
               boxShadow: "0 2em 4em 1em rgba(0, 0, 0, 0.3)",
             }}
+          /> */}
+          <Player
+            pip
+            width='100%'
+            height='100%'
+            controls
+            url='https://youtu.be/esPmkiH8iNs'
           />
           <Typography
             sx={{ mt: 6, color: "#666", maxWidth: 700, marginInline: "auto" }}
@@ -73,13 +80,6 @@ const Film: React.FC = () => {
             tranquille qui commence soudainement à vivre des expériences
             étranges.
           </Typography>
-          {/* <Player
-          pip
-          width='100%'
-          height='100%'
-          controls
-          url='https://youtu.be/esPmkiH8iNs'
-        ></Player> */}
 
           <Stack mt={16} gap={4} direction='column'>
             <Typography variant='h3' component='h2'>

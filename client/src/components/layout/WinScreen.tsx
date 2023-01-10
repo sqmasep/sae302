@@ -18,6 +18,7 @@ import Confetti from "react-confetti";
 import { useLevelContext } from "../../contexts/LevelProvider";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import socket from "../../lib/socket";
+import Player from "react-player";
 
 const MotionStack = motion(Stack);
 
@@ -72,12 +73,11 @@ const WinScreen: React.FC = () => {
           exit={{ y: 50, opacity: 0 }}
           direction='column'
           gap={2}
-          alignItems='center'
           mt={24}
         >
           <Typography variant='h1'>et zé gagné!</Typography>
           {isFirstWinner && (
-            <Typography variant='subtitle1' component='h2' textAlign='center'>
+            <Typography variant='subtitle1' component='h2'>
               Tu es le premier à avoir gagné ! Contacte les organisateurs
             </Typography>
           )}
@@ -98,12 +98,12 @@ const WinScreen: React.FC = () => {
             </Formik>
           )}
 
-          <Box my={12}>
+          <Box my={12} sx={{ minHeight: "100rem" }}>
             <Typography variant='h4' component='h2' sx={{ mb: 4 }}>
               Tu peux voir la vraie fin du court-métrage
             </Typography>
 
-            <video
+            {/* <video
               src='/vids/trailer.mp4'
               controls
               width='100%'
@@ -112,7 +112,16 @@ const WinScreen: React.FC = () => {
                 borderRadius: "1rem",
                 boxShadow: "0 2em 4em 1em rgba(0, 0, 0, 0.3)",
               }}
+            /> */}
+            <Player
+              pip
+              width='100%'
+              height='auto'
+              style={{ aspectRatio: "16/9" }}
+              controls
+              url='https://youtu.be/esPmkiH8iNs'
             />
+
             <Button
               sx={{ mt: 4 }}
               onClick={() => setOpenDialog(true)}
