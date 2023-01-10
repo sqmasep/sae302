@@ -75,7 +75,7 @@ const WinScreen: React.FC = () => {
           gap={2}
           mt={24}
         >
-          <Typography variant='h1'>et zé gagné!</Typography>
+          <Typography variant='h1'>Bien joué tu as gagné !</Typography>
           {isFirstWinner && (
             <Typography variant='subtitle1' component='h2'>
               Tu es le premier à avoir gagné ! Contacte les organisateurs

@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Stack } from "@mui/material";
+import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import React from "react";
 import { PlayArrow, Search } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -58,22 +58,18 @@ const Home: React.FC = () => {
                 <Button
                   component={Link}
                   size='large'
-                  to='/'
+                  to='/playground'
                   endIcon={<Search />}
                   sx={{
                     "@media (max-width: 600px)": {
                       width: "100%",
                     },
                   }}
-                  disabled
                 >
-                  Disponible dans{" "}
-                  {formatDistance(new Date(), new Date("2023-01-11"), {
-                    locale: fr,
-                  })}
-                  {/* Commencer les recherches */}
+                  Commencer les recherches
                 </Button>
               </Stack>
+              <Typography>instagram</Typography>
             </Stack>
           </Grid>
         </Grid>
