@@ -30,6 +30,7 @@ const WinScreen: React.FC = () => {
   const { reset, token } = useLevelContext();
   const [isFirstWinner, setIsFirstWinner] = useState(false);
   const [alreadyInLeaderboard, setAlreadyInLeaderboard] = useState(false);
+  const [alreadySentNickname, setAlreadySentNickname] = useState(false);
   const [winnerToken, setWinnerToken] = useLocalStorage(
     "interferences-winner-token",
     false
@@ -45,6 +46,7 @@ const WinScreen: React.FC = () => {
       ? setErrors({ nickname: "Veuillez renseigner un pseudo valide" })
       : socket.emit("sendNickname", { token, nickname });
     resetForm();
+    setAlreadySentNickname(true);
   };
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const WinScreen: React.FC = () => {
               Tu es le premier à avoir gagné ! Contacte les organisateurs
             </Typography>
           )}
-          {!alreadyInLeaderboard && (
+          {!alreadySentNickname && !alreadyInLeaderboard && (
             <Formik
               initialValues={{ nickname: "" }}
               onSubmit={handleSendNickname}

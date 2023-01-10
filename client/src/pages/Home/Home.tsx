@@ -69,7 +69,6 @@ const Home: React.FC = () => {
                   Commencer les recherches
                 </Button>
               </Stack>
-              <Typography>instagram</Typography>
             </Stack>
           </Grid>
         </Grid>
